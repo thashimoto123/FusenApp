@@ -2,21 +2,12 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 
-import createKeydownHandler from './createKeydownHandler';
+import InputWithSuggestion from 'components/InputWithSuggestion';
 
 function App() {
-  const pressAHandler = createKeydownHandler({
-    key: 'a',
-    handler: () => {console.log('pressed a')},
-    control: true
-  })
-
-  React.useEffect(() => {
-    window.addEventListener('keydown', pressAHandler);
-    return () => { window.removeEventListener('keydown', pressAHandler) };
-  }, [])
   return (
     <div className="App">
+      <InputWithSuggestion />
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>

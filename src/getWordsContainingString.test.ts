@@ -43,4 +43,11 @@ describe('getWordsContainingString', () => {
     expect(hits.includes('リンゴ')).toBeTruthy();
     expect(hits.includes('りんご')).toBeTruthy();
   });
+
+  test('「00aa」を入力して「00aa」を出力', () => {
+    const words = ['00aa', 'りんご', 'apple'];
+    const hits = getWordsContainingString('00aa', words);
+    expect(hits.length === 1).toBeTruthy();
+    expect(hits.includes('00aa')).toBeTruthy();
+  });
 });
