@@ -28,12 +28,12 @@ const createSearchPattern = (str: string, converters: Converter[]):string => {
     let convertedWords:string[] = converters.map((converter):string => {
         return converter(str);
     });
-    let pattern:string = '';
+    let pattern:string = '^';
     for (let i = 0; i < str.length; i++) {
         pattern += '[';
-        convertedWords.forEach(convertedWord => {
-           pattern +=  convertedWord[i];
-        })
+        for (let j = 0; j < convertedWords.length; j++){
+            pattern +=  convertedWords[j][i];
+        }
         pattern += ']';
     }
     pattern += '.*$';
@@ -45,11 +45,9 @@ const getWordsContainingString = (str: string, words: string[]): string[] => {
     const converters = [hira2kana, kana2hira, upper2lower, lower2upper];
     const pattern = createSearchPattern(str, converters);
     const reg = new RegExp(pattern);
-    const hits:string[] = [];
-
-    for (let i = 0; i < words.length; i++) {
-        if (words[i].match(reg)) hits.push(words[i]);
-    }
+    const hits = words.filter(word => {
+        return word.match(reg);
+    });
 
     return hits;
 }

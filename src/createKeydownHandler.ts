@@ -1,6 +1,6 @@
 interface Option {
   key: string;
-  handler: (...args: any[]) => void;
+  handler: (ev: KeyboardEvent) => unknown;
   control?: boolean;
 }
 
