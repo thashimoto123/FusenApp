@@ -143,7 +143,6 @@ input, select, option, optgroup {
 html, body {
   width: 100%;
   height: 100%;
-  font-size: 14px;
 }
 
 body,
@@ -151,6 +150,7 @@ input,
 textarea,
 button {
   font-family: "Yu Gothic", YuGothic;
+  font-size: 14px;
   color: #6e7073;
   font-weight: bold;
 }
