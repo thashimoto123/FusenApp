@@ -1,6 +1,6 @@
 import { useMemo, useState, useCallback, useEffect } from 'react';
-import getWordsContainingString from 'getWordsContainingString';
-import createKeydownHandler from 'createKeydownHandler';
+import getWordsContainingString from 'utils/getWordsContainingString';
+import createKeydownHandler from 'utils/createKeydownHandler';
 
 interface UseSuggestion {
   (
@@ -14,12 +14,7 @@ interface UseSuggestion {
   };
 }
 
-export const useSuggestion: UseSuggestion = (
-  str: string, 
-  list: string[], 
-  callbackSelectSuggestion,
-  filter = getWordsContainingString
-  ) => {
+export const useSuggestion: UseSuggestion = (str, list, callbackSelectSuggestion, filter = getWordsContainingString) => {
   const [activeIndex, setActiveIndex] = useState<number>(-1);
 
   const suggestions = useMemo(() => {
