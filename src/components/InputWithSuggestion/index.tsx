@@ -8,10 +8,11 @@ const InputWithSuggestion:React.FC = () => {
   const [isFoucs, setIsFocus]= useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const callbackSelectSuggestion = useCallback((text: string) => {
-    inputRef?.current?.blur();
     setText(text);
     setIsFocus(false);
-  }, [setText, setIsFocus,inputRef]);
+    inputRef?.current?.blur();
+    console.log(text);
+  }, [setText, setIsFocus, inputRef]);
 
   return (
     <div className="input-wrap">

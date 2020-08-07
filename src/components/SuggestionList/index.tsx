@@ -28,7 +28,7 @@ const SuggestionList: React.FC<SuggestionListProps> = ({
             <li 
               key={suggestion} 
               className={isActive} 
-              onClick={()=>{ callbackSelectSuggestion(suggestion) }}
+              onMouseDown={()=>{ callbackSelectSuggestion(suggestion) }}
             >
               {suggestion}
             </li>
