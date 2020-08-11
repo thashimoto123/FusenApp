@@ -55,7 +55,7 @@ const BrdCard: React.FC<BrdCardProps> = ({
             onChange={e => {handleChange(e.target.value)}}
             onBlur={handleBlur} /> 
           :
-          <div className={cx('inner')}>{ text }</div>
+          <pre className={cx('inner')}>{ text }</pre>
       }
     </div>
   )

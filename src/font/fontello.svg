@@ -1,0 +1,28 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2020 by original authors @ fontello.com</metadata>
+<defs>
+<font id="fontello" horiz-adv-x="1000" >
+<font-face font-family="fontello" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="ok" unicode="&#xe800;" d="M352-10l-334 333 158 160 176-174 400 401 159-160z" horiz-adv-x="928" />
+
+<glyph glyph-name="tag" unicode="&#xe801;" d="M389 797l522-522-371 0 0-372-522 523 0 371 371 0z m-167-310q44 0 76 31t31 75-31 75-76 32-75-32-31-75 31-75 75-31z" horiz-adv-x="928" />
+
+<glyph glyph-name="plus-1" unicode="&#xe802;" d="M911 462l0-223-335 0 0-336-223 0 0 336-335 0 0 223 335 0 0 335 223 0 0-335 335 0z" horiz-adv-x="928" />
+
+<glyph glyph-name="home" unicode="&#xe803;" d="M464 797l447-446-112 0 0-448-669 0 0 448-112 0z m224-781l0 401-224 157-223-157 0-401 168 0 0 168 112 0 0-168 167 0z" horiz-adv-x="928" />
+
+<glyph glyph-name="share-1" unicode="&#xe804;" d="M650 200q62 0 106-43t44-107q0-62-44-106t-106-44-106 44-44 106q0 6 1 14t1 12l-260 156q-42-32-92-32-62 0-106 44t-44 106 44 106 106 44q54 0 92-30l260 156q0 4-1 12t-1 12q0 62 44 106t106 44 106-43 44-107q0-62-44-106t-106-44q-52 0-90 32l-262-156q2-8 2-26 0-16-2-24l262-156q36 30 90 30z" horiz-adv-x="800" />
+
+<glyph glyph-name="right-open" unicode="&#xe805;" d="M98 626l226-236q16-16 16-40 0-22-16-38l-226-236q-16-16-40-16t-40 16q-36 36 0 80l186 194-186 196q-36 44 0 80 16 16 41 16t39-16z" horiz-adv-x="340" />
+
+<glyph glyph-name="left-open" unicode="&#xe806;" d="M242 626q14 16 39 16t41-16q38-36 0-80l-186-196 186-194q38-44 0-80-16-16-40-16t-40 16l-226 236q-16 16-16 38 0 24 16 40 206 214 226 236z" horiz-adv-x="341" />
+
+<glyph glyph-name="trash" unicode="&#xe83d;" d="M275 825c-14 0-25-11-25-25l0-75-200 0c-28 0-50-22-50-50 0-28 22-50 50-50l650 0c28 0 50 22 50 50 0 28-22 50-50 50l-200 0 0 75c0 14-11 25-25 25l-200 0z m25-50l150 0 0-50-150 0 0 50z m-250-200c-28 0-54-23-49-50l99-600c5-27 22-50 50-50l450 0c28 0 45 23 50 50l99 600c5 27-21 50-49 50l-650 0z" horiz-adv-x="750" />
+
+<glyph glyph-name="color-adjust" unicode="&#xf020;" d="M0 350q0 95 37 182t100 149 150 100 182 37 182-37 149-100 100-149 37-182-37-182-100-150-149-100-182-37-182 37-150 100-100 150-37 182z m397-226q0-46 32-79t79-32q3 0 11-1 81 12 148 60t105 120 39 158q0 90-44 167t-118 123-164 51q60-95 60-209 0-81-31-153t-85-128q-32-33-32-77z" horiz-adv-x="937.5" />
+</font>
+</defs>
+</svg>
