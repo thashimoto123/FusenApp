@@ -13,15 +13,16 @@ interface BrdCardProps {
     z: number
   },
   handleChange?: (text: string) => unknown,
-  handleClick?: (...args: unknown[]) => unknown,
-  handleDoubleClick?: (...args: unknown[]) => unknown,
-  handleRightClick?: (...args: unknown[]) => unknown,
+  handleClick?: (...args: any[]) => void,
+  handleDoubleClick?: (...args: any[]) => void,
+  handleRightClick?: (...args: any[]) => void,
 }
 
 const BrdCard: React.FC<BrdCardProps> = ({ 
   text, 
   color,
   position,
+  handleClick = () => {},
   handleChange = () => {},
   handleRightClick = () => {} 
 }) => {
@@ -45,7 +46,13 @@ const BrdCard: React.FC<BrdCardProps> = ({
   }, [setIsFocus]);
 
   return (
-    <div className={classname} style={style} onDoubleClick={handleDoubleClick} >
+    <div 
+      className={classname} 
+      style={style} 
+      onDoubleClick={handleDoubleClick} 
+      onContextMenu={handleRightClick} 
+      onClick={handleClick}
+      >
       {
         isFocus ? 
           <textarea 

@@ -10,7 +10,7 @@ export type State = Card[];
 const initialState: State = [{
   id: '0',
   text: 'text',
-  color: 'red',
+  color: 'white',
   label: {
     作成者: 'hashimoto'
   },
