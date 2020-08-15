@@ -12,7 +12,7 @@ interface BrdCardProps {
     y: number,
     z: number
   },
-  handleChange?: (text: string) => unknown,
+  handleChange?: (ev: React.ChangeEvent<HTMLTextAreaElement>) => void,
   handleClick?: (...args: any[]) => void,
   handleDoubleClick?: (...args: any[]) => void,
   handleRightClick?: (...args: any[]) => void,
@@ -59,7 +59,7 @@ const BrdCard: React.FC<BrdCardProps> = ({
             className={cx('textarea')} 
             defaultValue={text} 
             autoFocus
-            onChange={e => {handleChange(e.target.value)}}
+            onChange={handleChange}
             onBlur={handleBlur} /> 
           :
           <pre className={cx('inner')}>{ text }</pre>
