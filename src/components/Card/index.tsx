@@ -1,10 +1,12 @@
 import React, { useState, useMemo, useCallback } from 'react';
+import { useDrag } from 'react-dnd';
 import cn from 'classnames/bind';
 import styles from './style.module.scss';
 
 const cx = cn.bind(styles);
 
 interface BrdCardProps {
+  id?: string,
   text: string,
   color: string,
   position: {
@@ -16,17 +18,26 @@ interface BrdCardProps {
   handleClick?: (...args: any[]) => void,
   handleDoubleClick?: (...args: any[]) => void,
   handleRightClick?: (...args: any[]) => void,
+  handleDrag?: (...args: any[]) => void,
 }
 
-const BrdCard: React.FC<BrdCardProps> = ({ 
+const Card: React.FC<BrdCardProps> = ({
+  id = '',
   text, 
   color,
   position,
   handleClick = () => {},
   handleChange = () => {},
-  handleRightClick = () => {} 
+  handleRightClick = () => {},
+  handleDrag= () => {}
 }) => {
   const [isFocus, setIsFocus] = useState<boolean>(false);
+  const [{ isDragging }, drag] = useDrag({
+    item: { id, type: 'card', position },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  })
   const classname = cx('card');
   const style = useMemo(() => {
     return {
@@ -45,13 +56,20 @@ const BrdCard: React.FC<BrdCardProps> = ({
     setIsFocus(false);
   }, [setIsFocus]);
 
+  if (isDragging) {
+    return <div ref={drag} style={{opacity: 1}} />
+  }
+
   return (
     <div 
+      ref={drag}
       className={classname} 
       style={style} 
+      draggable="true"
       onDoubleClick={handleDoubleClick} 
       onContextMenu={handleRightClick} 
       onClick={handleClick}
+      onDrag={handleDrag}
       >
       {
         isFocus ? 
@@ -68,4 +86,4 @@ const BrdCard: React.FC<BrdCardProps> = ({
   )
 }
 
-export default BrdCard
+export default Card

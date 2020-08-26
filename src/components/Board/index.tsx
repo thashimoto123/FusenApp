@@ -6,7 +6,8 @@ import ContextMenu from 'components/ContextMenu';
 import  CardList, { 
   HandleClickCardFactory, 
   HandleRightClickCardFactory, 
-  HandleChangeTextFactory 
+  HandleChangeTextFactory,
+  HandleDragCardFactory
 } from 'components/CardList';
 import InputWithButton from 'components/InputWithButton';
 import { useContextMenu } from './hooks';
@@ -66,6 +67,20 @@ const Board: React.FC = () => {
     }
   }, [cardsRepository, cardsPresentation, cardsUseCase]);
 
+  const handleDragCardFactory: HandleDragCardFactory = useCallback((card: ICard) => {
+    return (ev: React.MouseEvent<HTMLDivElement>) => {
+      console.log(ev)
+      cardsUseCase.edit({
+        id: card.id,
+        position: {
+          ...card.position,
+          x: ev.pageX,
+          y: ev.pageY
+        }
+      })
+    }
+  }, [cardsRepository, cardsPresentation, cardsUseCase]);
+
   return (
     <div className={cx('board')}>
       <div ref={boardRef} className={cx('overlay')}></div>
@@ -74,6 +89,7 @@ const Board: React.FC = () => {
         handleClickCardFactory={handleClickCardFactory}
         handleRightClickCardFactory={handleRightClickCardFactory}
         handleChangeTextFactory={handleChangeTextFactory}
+        handleDragCardFactory={handleDragCardFactory}
       />
 
       <InputWithButton />
