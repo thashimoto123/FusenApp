@@ -2,14 +2,22 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import { createBrowserHistory } from 'history';
 import { connectRouter, routerMiddleware } from 'connected-react-router';
 import * as reducers from 'reducers';
-import { State as CardListState } from 'reducers/cardList';
+import { State as CardsState } from 'reducers/cards';
+import { State as ColorsState } from 'reducers/colors';
+import { State as BoardState } from 'reducers/board';
+import { State as LabelNamesState } from 'reducers/labelNames';
+import { State as UsersState } from 'reducers/users';
 import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 
 export const history = createBrowserHistory();
 
 export type StoreState = {
-  cardList: CardListState;
+  cards: CardsState;
+  colors: ColorsState;
+  board: BoardState,
+  labelNames: LabelNamesState,
+  users: UsersState
 }
 
 export default createStore(combineReducers(

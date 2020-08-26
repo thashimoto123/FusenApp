@@ -1,6 +1,6 @@
 import React from 'react';
-import { Board as IBoard } from 'entities/board';
-import { Card as ICard } from 'entities/card';
+import { IBoard } from 'core/entities/board';
+import { ICard } from 'core/entities/card';
 import Card from 'components/Card';
 
 export type HandleClickCardFactory = (card: ICard) => (ev: Event) => void;
@@ -8,7 +8,7 @@ export type HandleRightClickCardFactory = (card: ICard) => (ev: Event) => void;
 export type HandleChangeTextFactory = (card: ICard) => (ev: React.ChangeEvent<HTMLTextAreaElement>) => void;
 
 export type CardListProps = {
-  cardList: IBoard['cardList'];
+  cardList: ICard[];
   handleRightClickCardFactory: HandleClickCardFactory;
   handleClickCardFactory: HandleRightClickCardFactory;
   handleChangeTextFactory: HandleChangeTextFactory;

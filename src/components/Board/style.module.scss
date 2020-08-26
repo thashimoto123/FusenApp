@@ -1,6 +1,7 @@
 .board {
   position: relative;
-  min-width: 100vw;
+  margin: 20px;
+  width: calc(100vw - 40px);
   min-height: 100vh;
 }
 .overlay {

@@ -1,6 +1,8 @@
 import {useState, useLayoutEffect, useCallback} from 'react';
+import { ICard } from 'core/entities/card';
 
 export const useContextMenu = (parentRef: React.MutableRefObject<HTMLDivElement | null>) => {
+  const [contextMenuCard, setContextMenuCard] = useState<ICard | null>(null);
   const [contextMenuView, setContextMenuView] = useState<boolean>(false);
   const [contextMenuPosition, setContextMenuPosition] = useState<{x: number,y: number}>({x: 0, y: 0});
   const hideContextMenu = useCallback(() => {
@@ -24,6 +26,8 @@ export const useContextMenu = (parentRef: React.MutableRefObject<HTMLDivElement 
     setContextMenuPosition,
     setContextMenuView,
     contextMenuPosition,
-    contextMenuView
+    contextMenuView,
+    contextMenuCard,
+    setContextMenuCard
   }
 }

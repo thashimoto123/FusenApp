@@ -10,7 +10,7 @@ export type Card = {
   id: string,
   text: string,
   color: Color,
-  label: Label[],
+  labels: Label[],
   position: {
     x: number,
     y: number,

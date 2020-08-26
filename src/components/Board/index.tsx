@@ -1,7 +1,7 @@
 import React, { useState, useRef, useLayoutEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import cn from 'classnames/bind';
-import { Card as ICard } from 'entities/card';
+import { ICard } from 'core/entities/card';
 import ContextMenu from 'components/ContextMenu';
 import  CardList, { 
   HandleClickCardFactory, 
@@ -9,21 +9,30 @@ import  CardList, {
   HandleChangeTextFactory 
 } from 'components/CardList';
 import { useContextMenu } from './hooks';
-import { useEditCard } from 'actions/cardList';
+import { CardsUseCase } from 'core/usecases/cards';
+import { useCardsLocalStorageRepository } from 'repositories/cards';
+import { useCardsPresentation } from 'presentations/cards';
 import styles from './style.module.scss';
 
 const cx = cn.bind(styles);
 
 const Board: React.FC = () => {
-  const cardList = useSelector(state => { return state.cardList; });
+  // const cardList = useSelector(state => { return state.cardList; });
+  const [loading, setLoading] = useState<boolean>(false);
   const boardRef = useRef<HTMLDivElement | null>(null);
   const {
     setContextMenuPosition,
     setContextMenuView,
     contextMenuPosition,
-    contextMenuView
+    contextMenuView,
+    contextMenuCard,
+    setContextMenuCard
   } = useContextMenu(boardRef);
-  const editCard = useEditCard();
+  const cardsRepository = useCardsLocalStorageRepository();
+  const cardsPresentation = useCardsPresentation({setLoading});
+  const cardsUseCase = new CardsUseCase(cardsRepository, cardsPresentation);
+  const cards = useSelector(state => state.cards);
+  const editCard = cardsUseCase.edit;
 
   // コンテキストメニューを表示する関数を作成する関数
   const handleRightClickCardFactory: HandleRightClickCardFactory = useCallback((card: ICard) => {
@@ -31,6 +40,7 @@ const Board: React.FC = () => {
       ev.preventDefault();
       setContextMenuPosition({x: card.position.x + 300, y: card.position.y});
       setContextMenuView(true);
+      setContextMenuCard(card);
     }
   }, [setContextMenuPosition, setContextMenuView]);
 
@@ -45,10 +55,10 @@ const Board: React.FC = () => {
   // カードのテキストを変更する関数を作成する関数
   const handleChangeTextFactory: HandleChangeTextFactory = useCallback((card: ICard) => {
     return (ev: React.ChangeEvent<HTMLTextAreaElement>) => {
-      editCard({card: {
+      editCard({
         id: card.id,
-        text: ev.target?.value
-      }})
+        text: ev.target?.value ?? ''
+      })
     }
   }, []);
 
@@ -56,13 +66,15 @@ const Board: React.FC = () => {
     <div className={cx('board')}>
       <div ref={boardRef} className={cx('overlay')}></div>
       <CardList 
-        cardList={cardList}
+        cardList={cards}
         handleClickCardFactory={handleClickCardFactory}
         handleRightClickCardFactory={handleRightClickCardFactory}
         handleChangeTextFactory={handleChangeTextFactory}
       />
 
-      { contextMenuView && <ContextMenu position={contextMenuPosition} />}
+      { (contextMenuView && contextMenuCard) && 
+        <ContextMenu position={contextMenuPosition} card={contextMenuCard} cardsUseCase={cardsUseCase} setIsShow={setContextMenuView} />
+      }
     </div>
   )
 
