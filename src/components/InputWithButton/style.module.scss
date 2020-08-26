@@ -1,0 +1,38 @@
+.input-wrap {
+  display: flex;
+  align-items: stretch;
+  position: absolute;
+  width: 300px;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  transform: translate(-50%, -50%);
+  box-shadow: 0px 1px 3px rgba(0,0,0,0.2);
+  transition: 250ms ease-out;
+  &.focus {
+    box-shadow: 0px 3px 5px rgba(0,0,0,0.2);
+  }
+  input {
+    width: calc(100% - 60px);
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    box-shadow: none;
+    &:focus,
+    &:hover {
+      box-shadow: none;
+    }
+  }
+  button {
+    width: 60px;
+    color: #fff;
+    background-color: #79b8ff;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
+    &:focus{
+      opacity: 1;
+
+    }
+  }
+}

@@ -20,7 +20,14 @@ export const useCardsLocalStorageRepository = (): ICardRepository => {
   }
 
   const findAll: ICardRepository['findAll'] = async () => {
-    return cards;
+    let boardsJSON: string | null = localStorage.getItem('boards');
+    let cardsInStorage: ICard[] = cards;
+    if (boardsJSON) {
+      let boards = JSON.parse(boardsJSON);
+      let b = boards.find((b:IBoard) => b.id === board.id);
+      if (b) { cardsInStorage = b.cards }
+    }
+    return cardsInStorage;
   }
 
   const save: ICardRepository['save'] = async (cards: ICard[]) => {
@@ -29,11 +36,13 @@ export const useCardsLocalStorageRepository = (): ICardRepository => {
 
     
     let index = boards.findIndex(b => b.id === board.id);
+    board.cards = cards;
     if (index >= 0) {
       boards[index] = board
     } else {
       boards.push(board);
     }
+    console.log(boards);
     localStorage.setItem('boards', JSON.stringify(boards));
   }
 

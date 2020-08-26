@@ -37,7 +37,7 @@ export interface ICardsUseCase {
   delete: (id: string) => Promise<undefined>;
 }
 
-export class CardsUseCase {
+export class CardsUseCase implements ICardsUseCase {
   private repository: ICardRepository;
   private presentation: ICardsPresentation;
 
@@ -48,26 +48,27 @@ export class CardsUseCase {
 
   async find(id: string): Promise<ICard | undefined> {
     this.presentation.setLoading(true);
-    const find = await this.repository.find(id);
-    if (find) {
+    const found = await this.repository.find(id);
+    if (found) {
       this.presentation.setLoading(false);
-      this.presentation.viewCard(find);
+      this.presentation.viewCard(found);
     } else {
       this.presentation.notFindCard();
     }
-    return find;
+    return found;
   }
 
   async findAll(): Promise<ICard[]> {
     this.presentation.setLoading(true);
-    const find = await this.repository.findAll()
-    if (find) {
+    const found = await this.repository.findAll();
+    console.log(found);
+    if (found) {
       this.presentation.setLoading(false);
-      this.presentation.viewCardAll(find);
+      this.presentation.viewCardAll(found);
     } else {
       this.presentation.notFindCardAll();
     }
-    return find;
+    return found;
   }
 
   async add(card: InAddCard): Promise<undefined> {
@@ -75,7 +76,7 @@ export class CardsUseCase {
     if (!cards) { return };
     const newCards = [...cards, new Card(card)];
     this.repository.save(newCards);
-    this.presentation.viewCardAll(cards);
+    this.presentation.viewCardAll(newCards);
   }
 
   async edit(card: InEditCard): Promise<undefined> {

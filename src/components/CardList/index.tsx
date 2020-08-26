@@ -1,5 +1,4 @@
 import React from 'react';
-import { IBoard } from 'core';
 import { ICard } from 'core';
 import Card from 'components/Card';
 
