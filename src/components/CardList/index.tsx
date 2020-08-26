@@ -1,6 +1,6 @@
 import React from 'react';
-import { IBoard } from 'core/entities/board';
-import { ICard } from 'core/entities/card';
+import { IBoard } from 'core';
+import { ICard } from 'core';
 import Card from 'components/Card';
 
 export type HandleClickCardFactory = (card: ICard) => (ev: Event) => void;

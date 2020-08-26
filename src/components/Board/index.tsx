@@ -1,7 +1,7 @@
 import React, { useState, useRef, useLayoutEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import cn from 'classnames/bind';
-import { ICard } from 'core/entities/card';
+import { ICard } from 'core';
 import ContextMenu from 'components/ContextMenu';
 import  CardList, { 
   HandleClickCardFactory, 
@@ -9,7 +9,7 @@ import  CardList, {
   HandleChangeTextFactory 
 } from 'components/CardList';
 import { useContextMenu } from './hooks';
-import { CardsUseCase } from 'core/usecases/cards';
+import { CardsUseCase } from 'core';
 import { useCardsLocalStorageRepository } from 'repositories/cards';
 import { useCardsPresentation } from 'presentations/cards';
 import styles from './style.module.scss';
