@@ -7,7 +7,12 @@ import styles from './style.module.scss';
 
 const cx = cn.bind(styles);
 
-const InputWithButton = () => {
+export type InputWithButtonProps = {
+  style?: React.CSSProperties
+}
+const InputWithButton: React.FC<InputWithButtonProps> = ({
+  style = {}
+}) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [text, setText] = useState<string>('');
   const [isFocus, setIsFocus] = useState<boolean>(false);
@@ -30,7 +35,7 @@ const InputWithButton = () => {
   }, [setIsFocus]);
 
   return (
-    <form className={cx('input-wrap', {'focus': isFocus})} onSubmit={handleSubmit}>
+    <form style={style} className={cx('input-wrap', {'focus': isFocus})} onSubmit={handleSubmit}>
       <input 
         type="text" 
         value={text}

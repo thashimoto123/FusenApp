@@ -1,12 +1,12 @@
-import React, { useState, useMemo, useCallback } from 'react';
-import { useDrag } from 'react-dnd';
+import React, { useState, useMemo, useCallback, useEffect } from 'react';
 import cn from 'classnames/bind';
 import styles from './style.module.scss';
 
 const cx = cn.bind(styles);
 
-interface BrdCardProps {
+export interface CardProps {
   id?: string,
+  cardRef?: any,
   text: string,
   color: string,
   position: {
@@ -21,8 +21,9 @@ interface BrdCardProps {
   handleDrag?: (...args: any[]) => void,
 }
 
-const Card: React.FC<BrdCardProps> = ({
+const Card: React.FC<CardProps> = ({
   id = '',
+  cardRef,
   text, 
   color,
   position,
@@ -32,12 +33,7 @@ const Card: React.FC<BrdCardProps> = ({
   handleDrag= () => {}
 }) => {
   const [isFocus, setIsFocus] = useState<boolean>(false);
-  const [{ isDragging }, drag] = useDrag({
-    item: { id, type: 'card', position },
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
-  })
+  
   const classname = cx('card');
   const style = useMemo(() => {
     return {
@@ -48,6 +44,7 @@ const Card: React.FC<BrdCardProps> = ({
     }
   },[color, position]);
 
+
   const handleDoubleClick = useCallback(() => {
     setIsFocus(true);
   }, [setIsFocus]);
@@ -56,13 +53,10 @@ const Card: React.FC<BrdCardProps> = ({
     setIsFocus(false);
   }, [setIsFocus]);
 
-  if (isDragging) {
-    return <div ref={drag} style={{opacity: 1}} />
-  }
 
   return (
     <div 
-      ref={drag}
+      ref={cardRef}
       className={classname} 
       style={style} 
       draggable="true"

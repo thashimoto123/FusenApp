@@ -1,6 +1,6 @@
 import React from 'react';
 import { ICard } from 'core';
-import Card from 'components/Card';
+import Card, { CardProps } from 'components/Card';
 
 export type HandleClickCardFactory = (card: ICard) => (ev: Event) => void;
 export type HandleRightClickCardFactory = (card: ICard) => (ev: Event) => void;
@@ -8,6 +8,8 @@ export type HandleChangeTextFactory = (card: ICard) => (ev: React.ChangeEvent<HT
 export type HandleDragCardFactory = (card: ICard) => (ev: React.MouseEvent<HTMLDivElement>) => void;
 
 export type CardListProps = {
+  style?: React.CSSProperties;
+  ItemComponent?: React.FC<CardProps>;
   cardList: ICard[];
   handleRightClickCardFactory: HandleClickCardFactory;
   handleClickCardFactory: HandleRightClickCardFactory;
@@ -16,6 +18,8 @@ export type CardListProps = {
 }
 
 const CardList: React.FC<CardListProps> = ({
+  style = {},
+  ItemComponent = Card,
   cardList,
   handleClickCardFactory,
   handleRightClickCardFactory,
@@ -23,7 +27,7 @@ const CardList: React.FC<CardListProps> = ({
   handleDragCardFactory,
 }) => {
   return (
-    <div>
+    <div style={style}>
       {
         cardList.map((card: ICard) => {
           const handleClick = handleClickCardFactory(card);
@@ -32,7 +36,7 @@ const CardList: React.FC<CardListProps> = ({
           const handleDrag = handleDragCardFactory(card);
 
           return (
-            <Card 
+            <ItemComponent 
               key={card.id}
               id={card.id}
               text={card.text} 

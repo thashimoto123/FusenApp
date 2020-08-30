@@ -4,6 +4,7 @@ import cn from 'classnames/bind';
 import { ICard } from 'core';
 import ContextMenu from 'components/ContextMenu';
 import  CardList, { 
+  CardListProps,
   HandleClickCardFactory, 
   HandleRightClickCardFactory, 
   HandleChangeTextFactory,
@@ -18,10 +19,18 @@ import styles from './style.module.scss';
 
 const cx = cn.bind(styles);
 
-const Board: React.FC = () => {
+export type BoardProps = {
+  boardRef?: any,
+  CardListComponent?: React.FC<CardListProps>
+}
+
+const Board: React.FC<BoardProps> = ({
+  boardRef = null,
+  CardListComponent = CardList
+}) => {
   // const cardList = useSelector(state => { return state.cardList; });
   const [loading, setLoading] = useState<boolean>(false);
-  const boardRef = useRef<HTMLDivElement | null>(null);
+  const overlayRef = useRef<HTMLDivElement | null>(null);
   const {
     setContextMenuPosition,
     setContextMenuView,
@@ -29,7 +38,7 @@ const Board: React.FC = () => {
     contextMenuView,
     contextMenuCard,
     setContextMenuCard
-  } = useContextMenu(boardRef);
+  } = useContextMenu(overlayRef);
   const cardsRepository = useCardsLocalStorageRepository();
   const cardsPresentation = useCardsPresentation({setLoading});
   const cardsUseCase = new CardsUseCase(cardsRepository, cardsPresentation);
@@ -69,7 +78,6 @@ const Board: React.FC = () => {
 
   const handleDragCardFactory: HandleDragCardFactory = useCallback((card: ICard) => {
     return (ev: React.MouseEvent<HTMLDivElement>) => {
-      console.log(ev)
       cardsUseCase.edit({
         id: card.id,
         position: {
@@ -82,9 +90,10 @@ const Board: React.FC = () => {
   }, [cardsRepository, cardsPresentation, cardsUseCase]);
 
   return (
-    <div className={cx('board')}>
-      <div ref={boardRef} className={cx('overlay')}></div>
-      <CardList 
+    <div ref={boardRef} className={cx('board')}>
+      <div ref={overlayRef} className={cx('overlay')}></div>
+      <CardListComponent 
+        style={{zIndex: 2}}
         cardList={cards}
         handleClickCardFactory={handleClickCardFactory}
         handleRightClickCardFactory={handleRightClickCardFactory}
@@ -92,7 +101,7 @@ const Board: React.FC = () => {
         handleDragCardFactory={handleDragCardFactory}
       />
 
-      <InputWithButton />
+      <InputWithButton style={{zIndex: 3}} />
 
       { (contextMenuView && contextMenuCard) && 
         <ContextMenu position={contextMenuPosition} card={contextMenuCard} cardsUseCase={cardsUseCase} setIsShow={setContextMenuView} />
