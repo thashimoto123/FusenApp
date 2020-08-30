@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useMemo} from 'react';
 import { useSelector } from 'react-redux';
 import cn from 'classnames/bind';
 import styles from './style.module.scss';
@@ -24,15 +24,21 @@ const ContextMenuColorSelector: React.FC<Props> = ({ card }) => {
       color
     })
   }, [card, cardsUseCase]);
+  const listStyle = useMemo(() => {
+    return {
+      width: (colors.length * 40 + 10) + 'px'
+    }
+  }, [colors]);
 
   return (
-    <ul className={cx('color-list')}>
+    <ul className={cx('color-list')} style={listStyle}>
       {
         colors.map(color => {
-          const  isActive = color === card.color;
+          const isActive = color === card.color;
+          const border = color === 'white';
           return (
             <li 
-              className={cx('color-item', {'is-active': isActive})} 
+              className={cx('color-item', {'is-active': isActive, border})} 
               style={{backgroundColor: color}} 
               onClick={() => {handleClickColor(color)}}
             ></li>

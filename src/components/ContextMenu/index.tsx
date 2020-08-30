@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import cn from 'classnames/bind';
 import styles from './style.module.scss';
 import ContextMenuColorSelector from 'components/ContextMenuColorSelector';
@@ -7,7 +8,7 @@ import { ICard, ICardsUseCase } from 'core';
 const cx = cn.bind(styles);
 
 interface ContextMenuProps {
-  card: ICard,
+  cardId: ICard['id'],
   position: {
     x: number,
     y: number
@@ -17,16 +18,20 @@ interface ContextMenuProps {
 }
 
 const ContextMenu: React.FC<ContextMenuProps> = ({
-  card,
+  cardId,
   position,
   children,
   cardsUseCase,
   setIsShow
 }) => {
+  const card: ICard | undefined = useSelector(state => state.cards.find(c => c.id === cardId));
+  if (!card) return (<></>);
+
   const style = {
     top: position.y + 'px',
     left: position.x + 'px'
   }
+  
   return (
     <div className={cx('context-menu')} style={style}>
       <ul>

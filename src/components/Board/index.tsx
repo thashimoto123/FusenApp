@@ -36,8 +36,8 @@ const Board: React.FC<BoardProps> = ({
     setContextMenuView,
     contextMenuPosition,
     contextMenuView,
-    contextMenuCard,
-    setContextMenuCard
+    contextMenuCardId,
+    setContextMenuCardId
   } = useContextMenu(overlayRef);
   const cardsRepository = useCardsLocalStorageRepository();
   const cardsPresentation = useCardsPresentation({setLoading});
@@ -54,9 +54,9 @@ const Board: React.FC<BoardProps> = ({
       ev.preventDefault();
       setContextMenuPosition({x: card.position.x + 300, y: card.position.y});
       setContextMenuView(true);
-      setContextMenuCard(card);
+      setContextMenuCardId(card.id);
     }
-  }, [setContextMenuPosition, setContextMenuView]);
+  }, [setContextMenuPosition, setContextMenuView, setContextMenuCardId]);
 
   // コンテキストメニューを非表示にする関数を作成する関数
   const handleClickCardFactory: HandleClickCardFactory = useCallback(() => {
@@ -109,8 +109,8 @@ const Board: React.FC<BoardProps> = ({
         zIndex: 3,
       }} />
 
-      { (contextMenuView && contextMenuCard) && 
-        <ContextMenu position={contextMenuPosition} card={contextMenuCard} cardsUseCase={cardsUseCase} setIsShow={setContextMenuView} />
+      { (contextMenuView && contextMenuCardId) && 
+        <ContextMenu position={contextMenuPosition} cardId={contextMenuCardId} cardsUseCase={cardsUseCase} setIsShow={setContextMenuView} />
       }
     </div>
   )
