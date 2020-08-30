@@ -18,7 +18,6 @@ export type CardListProps = {
 }
 
 const CardList: React.FC<CardListProps> = ({
-  style = {},
   ItemComponent = Card,
   cardList,
   handleClickCardFactory,
@@ -27,7 +26,7 @@ const CardList: React.FC<CardListProps> = ({
   handleDragCardFactory,
 }) => {
   return (
-    <div style={style}>
+    <div>
       {
         cardList.map((card: ICard) => {
           const handleClick = handleClickCardFactory(card);

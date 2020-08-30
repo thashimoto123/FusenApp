@@ -15,7 +15,7 @@ export interface ILabelName {
   name: string
 }
 
-export const initialColors: IColor[] = ['rgb(246, 236, 191)','rgb(215, 231, 248)','rgb(246, 198, 228)'];
+export const initialColors: IColor[] = ['white','rgb(246, 236, 191)','rgb(215, 231, 248)','rgb(246, 198, 228)'];
 export const initialLabelNames: ILabelName[] = [{
   id: uuid(),
   name: '作成者'

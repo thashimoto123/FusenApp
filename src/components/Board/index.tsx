@@ -10,7 +10,7 @@ import  CardList, {
   HandleChangeTextFactory,
   HandleDragCardFactory
 } from 'components/CardList';
-import InputWithButton from 'components/InputWithButton';
+import AddCardInputWithButton from 'components/AddCardInputWithButton';
 import { useContextMenu } from './hooks';
 import { CardsUseCase } from 'core';
 import { useCardsLocalStorageRepository } from 'repositories/cards';
@@ -101,7 +101,13 @@ const Board: React.FC<BoardProps> = ({
         handleDragCardFactory={handleDragCardFactory}
       />
 
-      <InputWithButton style={{zIndex: 3}} />
+      <AddCardInputWithButton style={{
+        position: 'absolute',
+        bottom: '200px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        zIndex: 3,
+      }} />
 
       { (contextMenuView && contextMenuCard) && 
         <ContextMenu position={contextMenuPosition} card={contextMenuCard} cardsUseCase={cardsUseCase} setIsShow={setContextMenuView} />

@@ -45,12 +45,7 @@ export const CustomDragLayer: React.FC = () => {
     initialOffset: monitor.getInitialSourceClientOffset(),
     currentOffset: monitor.getSourceClientOffset(),
     isDragging: monitor.isDragging(),
-  }))
-
-  if (item) {
-    console.log(item.position)
-
-  }
+  }));
 
   function renderItem() {
     switch (itemType) {
