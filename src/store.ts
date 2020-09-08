@@ -4,7 +4,7 @@ import { connectRouter, routerMiddleware } from 'connected-react-router';
 import * as reducers from 'reducers';
 import { State as CardsState } from 'reducers/cards';
 import { State as ColorsState } from 'reducers/colors';
-import { State as BoardState } from 'reducers/board';
+import { State as BoardState } from 'reducers/boards';
 import { State as LabelNamesState } from 'reducers/labelNames';
 import { State as UsersState } from 'reducers/users';
 import thunk from 'redux-thunk';
@@ -15,7 +15,7 @@ export const history = createBrowserHistory();
 export type StoreState = {
   cards: CardsState;
   colors: ColorsState;
-  board: BoardState,
+  boards: BoardState,
   labelNames: LabelNamesState,
   users: UsersState
 }

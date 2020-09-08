@@ -8,7 +8,7 @@ export const useCardsLocalStorageRepository = (): ICardRepository => {
   const dispatch = useDispatch();
   const cards = useSelector(state => state.cards);
   let board = useSelector(state => ({
-    id: state.board.id,
+    id: state.boards.currentId,
     colors: state.colors,
     labelNames: state.labelNames,
     users: state.users,

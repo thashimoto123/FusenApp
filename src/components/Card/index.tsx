@@ -9,38 +9,48 @@ export interface CardProps {
   cardRef?: any,
   text: string,
   color: string,
+  labels?: {
+    id: string,
+    name: string,
+    value: string
+  }[],
   position: {
     x: number,
     y: number,
     z: number
   },
+  style?: React.CSSProperties,
   handleChange?: (ev: React.ChangeEvent<HTMLTextAreaElement>) => void,
   handleClick?: (...args: any[]) => void,
   handleDoubleClick?: (...args: any[]) => void,
   handleRightClick?: (...args: any[]) => void,
   handleDrag?: (...args: any[]) => void,
+  handleMouseDown?: (...args: any[]) => void,
 }
 
 const Card: React.FC<CardProps> = ({
   id = '',
+  style = {},
   cardRef,
   text, 
   color,
   position,
+  labels = [],
   handleClick = () => {},
   handleChange = () => {},
   handleRightClick = () => {},
-  handleDrag= () => {}
+  handleDrag = () => {},
+  handleMouseDown = () => {}
 }) => {
   const [isFocus, setIsFocus] = useState<boolean>(false);
-  
   const classname = cx('card');
-  const style = useMemo(() => {
+  const cardStyle = useMemo(() => {
     return {
       backgroundColor: color,
       top: position.y + 'px',
       left: position.x + 'px',
-      zIndex: position.z
+      zIndex: position.z,
+      ...style
     }
   },[color, position]);
 
@@ -58,10 +68,11 @@ const Card: React.FC<CardProps> = ({
     <div 
       ref={cardRef}
       className={classname} 
-      style={style} 
+      style={cardStyle} 
       draggable="true"
       onDoubleClick={handleDoubleClick} 
       onContextMenu={handleRightClick} 
+      onMouseDown={handleMouseDown} 
       onClick={handleClick}
       onDrag={handleDrag}
       >
@@ -76,7 +87,29 @@ const Card: React.FC<CardProps> = ({
           :
           <pre className={cx('inner')}>{ text }</pre>
       }
+      {
+        // renderLabel(labels)
+      }
     </div>
+  )
+}
+
+function renderLabel(list: {id: string, name: string, value: string}[]) {
+  if (list.length === 0) return <></>;
+  return (
+    <ul>
+      {
+        list.map(label => {
+          if (!label.name) return <></>;
+          return (
+            <li key={label.name + '_' + label.value} className={cx('label')}>
+              <div className={cx("label-name")}>{label.name}</div>:
+              <div className={cx("label-value")}>{label.value}</div>
+            </li>
+          )
+        })
+      }
+    </ul>
   )
 }
 

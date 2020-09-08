@@ -2,37 +2,53 @@ import React from 'react';
 import { ICard } from 'core';
 import Card, { CardProps } from 'components/Card';
 
-export type HandleClickCardFactory = (card: ICard) => (ev: Event) => void;
-export type HandleRightClickCardFactory = (card: ICard) => (ev: Event) => void;
-export type HandleChangeTextFactory = (card: ICard) => (ev: React.ChangeEvent<HTMLTextAreaElement>) => void;
-export type HandleDragCardFactory = (card: ICard) => (ev: React.MouseEvent<HTMLDivElement>) => void;
+type CardType = {
+  id: ICard['id'];
+  text: ICard['text'];
+  position: ICard['position'];
+  color: ICard['color'];
+  labels: {id: string,name: string, value: string}[];
+}
+
+export type HandleClickCardFactory = (card: CardType) => (ev: Event) => void;
+export type HandleRightClickCardFactory = (card: CardType) => (ev: Event) => void;
+export type HandleChangeTextFactory = (card: CardType) => (ev: React.ChangeEvent<HTMLTextAreaElement>) => void;
+export type HandleDragCardFactory = (card: CardType) => (ev: React.MouseEvent<HTMLDivElement>) => void;
+export type HandleMouseDownFactory = (card: CardType) => (ev: React.MouseEvent<HTMLDivElement>) => void;
 
 export type CardListProps = {
   style?: React.CSSProperties;
   ItemComponent?: React.FC<CardProps>;
-  cardList: ICard[];
-  handleRightClickCardFactory: HandleClickCardFactory;
-  handleClickCardFactory: HandleRightClickCardFactory;
-  handleChangeTextFactory: HandleChangeTextFactory;
-  handleDragCardFactory: HandleDragCardFactory;
+  cardList: CardType[];
+  handleRightClickCardFactory?: HandleClickCardFactory;
+  handleClickCardFactory?: HandleRightClickCardFactory;
+  handleChangeTextFactory?: HandleChangeTextFactory;
+  handleDragCardFactory?: HandleDragCardFactory;
+  handleMouseDownFactory?: HandleMouseDownFactory;
+}
+
+const defaultEmptyFactory = () => {
+  return () => {}
 }
 
 const CardList: React.FC<CardListProps> = ({
   ItemComponent = Card,
   cardList,
-  handleClickCardFactory,
-  handleRightClickCardFactory,
-  handleChangeTextFactory,
-  handleDragCardFactory,
+  handleClickCardFactory = defaultEmptyFactory,
+  handleRightClickCardFactory = defaultEmptyFactory,
+  handleChangeTextFactory = defaultEmptyFactory,
+  handleDragCardFactory = defaultEmptyFactory,
+  handleMouseDownFactory = defaultEmptyFactory,
 }) => {
   return (
     <div>
       {
-        cardList.map((card: ICard) => {
+        cardList.map((card: CardType) => {
           const handleClick = handleClickCardFactory(card);
           const handleRightClick = handleRightClickCardFactory(card);
           const handleChange = handleChangeTextFactory(card);
           const handleDrag = handleDragCardFactory(card);
+          const handleMouseDown = handleMouseDownFactory(card);
 
           return (
             <ItemComponent 
@@ -40,11 +56,13 @@ const CardList: React.FC<CardListProps> = ({
               id={card.id}
               text={card.text} 
               color={card.color} 
+              labels={card.labels}
               position={card.position}
               handleClick={handleClick} 
               handleRightClick={handleRightClick}
               handleChange={handleChange}
               handleDrag={handleDrag}
+              handleMouseDown={handleMouseDown}
             />
           )
         })

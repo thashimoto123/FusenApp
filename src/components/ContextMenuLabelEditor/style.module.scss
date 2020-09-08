@@ -1,0 +1,28 @@
+.label-list {
+  width: 250px;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #eee;
+  background-color: #fff;
+}
+.label-wrap {
+  display: block;
+  position: relative;
+  margin-bottom: 15px;
+}
+.label-item {
+  input {
+    width: 100%;
+    padding: 4px;
+    border: 1px solid #ccc;
+    border-radius: 0;
+    box-shadow: none;
+    &:focus,
+    &:hover {
+      box-shadow: none;
+    }
+  }
+}
+.label-name {
+  margin-bottom: 8px;
+}

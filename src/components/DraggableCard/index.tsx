@@ -13,7 +13,7 @@ export interface DropItem {
 }
 const DraggableCard: React.FC<CardProps> = (props) => {
   const [{ isDragging }, drag, preview] = useDrag({
-    item: { id: props.id, type: 'card',text: props.text, position: props.position, color: props.color },
+    item: { id: props.id, type: 'card',text: props.text, position: props.position, color: props.color, labels: props.labels },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),

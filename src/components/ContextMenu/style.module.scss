@@ -55,6 +55,7 @@
     height: 100%;
   }
 }
-.context-menu-item:hover .context-submenu {
+.context-menu-item:hover .context-submenu,
+.context-menu-item .context-submenu.is-hover {
   display: block;
 } 

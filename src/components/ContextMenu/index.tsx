@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 import cn from 'classnames/bind';
 import styles from './style.module.scss';
 import ContextMenuColorSelector from 'components/ContextMenuColorSelector';
+import ContextMenuLabelEditor from 'components/ContextMenuLabelEditor';
 import { ICard, ICardsUseCase } from 'core';
 
 const cx = cn.bind(styles);
@@ -31,7 +32,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
     top: position.y + 'px',
     left: position.x + 'px'
   }
-  
+
   return (
     <div className={cx('context-menu')} style={style}>
       <ul>
@@ -43,7 +44,7 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
           }}
         />
         <ContextMenuItem 
-          HoverItem={ContextMenuColorSelector}
+          HoverItem={ContextMenuLabelEditor}
           card={card}
           Component={() => {
             return <><i>&#xe801;</i>ラベルを設定</>
@@ -83,10 +84,11 @@ const ContextMenuItem: React.FC<ContextMenuItemProps> = ({
   HoverItem,
   onClick = () => {}
 }) => {
+  const [isHover, setIsHover] = useState<boolean>(false);
   return (
     <li className={cx('context-menu-item', {hover: HoverItem})} onClick={onClick}>
       { Component && <Component card={card} /> }
-      { HoverItem && <div className={cx('context-submenu')}><HoverItem card={card} /></div> }
+      { HoverItem && <div className={cx('context-submenu', {'is-hover': isHover})}><HoverItem card={card} isHover={isHover} setIsHover={setIsHover} /></div> }
     </li>
   )
 }

@@ -1,6 +1,6 @@
 import React from 'react';
-import { ICard } from 'core/entities/card';
-import { ICardsPresentation } from 'core/usecases/cards';
+import { ICard } from 'core';
+import { ICardsPresentation } from 'core';
 import { useDispatch } from 'react-redux';  
 import  * as actions  from 'actions/cards';
 

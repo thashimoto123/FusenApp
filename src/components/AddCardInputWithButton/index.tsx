@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useMemo } from 'react';
+import { useSelector } from 'react-redux';
 import { CardsUseCase } from 'core';
 import { useCardsLocalStorageRepository } from 'repositories/cards';
 import { useCardsPresentation } from 'presentations/cards';
@@ -9,17 +10,26 @@ export type AddCardInputWithButtonProps = {
 }
 
 const AddCardInputWithButton: React.FC<AddCardInputWithButtonProps> = (props) => {
+  const labelNames = useSelector(state => state.labelNames);
   const [text, setText] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const repository = useCardsLocalStorageRepository();
   const presentation = useCardsPresentation({ setLoading });
   const cardsUseCase = new CardsUseCase(repository, presentation);
 
+
+  const initialLabels = labelNames.map(labelName => ({
+    id: labelName.id,
+    value: ''
+  }))
+
+
   const handleSubmit = useCallback((ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
     cardsUseCase.add({
       text,
-      color: 'white'
+      color: 'white',
+      labels: initialLabels
     });
     setText('');
   }, [cardsUseCase, text]);

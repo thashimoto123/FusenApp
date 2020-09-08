@@ -16,16 +16,24 @@ export interface ILabelName {
 }
 
 export const initialColors: IColor[] = ['white','rgb(246, 236, 191)','rgb(215, 231, 248)','rgb(246, 198, 228)'];
-export const initialLabelNames: ILabelName[] = [{
+
+export const initialLabelNames: ILabelName[] = [
+{
   id: uuid(),
   name: '作成者'
-}]
+},
+{
+  id: uuid(),
+  name: 'カテゴリー'
+}
+];
+
 export type BoardProps = {
   id?: string;
   cards?: ICard[];
   colors?: IColor[];
   labelNames?: ILabelName[];
-  users: IUser[];
+  users?: IUser[];
 }
 export class Board implements IBoard {
   id: string;
@@ -33,17 +41,11 @@ export class Board implements IBoard {
   colors: IColor[];
   labelNames: ILabelName[];
   users: IUser[];
-  constructor({
-    id = uuid(),
-    cards = [],
-    colors = initialColors,
-    labelNames = initialLabelNames,
-    users = []
-  }:BoardProps) {
-    this.id = id;
-    this.cards = cards;
-    this.colors = colors;
-    this.labelNames = labelNames;
-    this.users = users;
+  constructor(props?:BoardProps) {
+    this.id = props?.id || uuid();
+    this.cards = props?.cards || [];
+    this.colors = props?.colors || initialColors;
+    this.labelNames = props?.labelNames || initialLabelNames;
+    this.users = props?.users || [];
   }
 }

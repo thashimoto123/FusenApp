@@ -47,10 +47,14 @@ export const CustomDragLayer: React.FC = () => {
     isDragging: monitor.isDragging(),
   }));
 
+  const cardStyle = {
+    boxShadow: '0px 3px 7px 0px rgba(0, 0, 0, 0.3)'
+  }
+
   function renderItem() {
     switch (itemType) {
       case 'card':
-        return <Card text={item.text} color={item.color} position={{x: 0, y: 0,z: 0}} id={'cardDragPreview'} />
+        return <Card text={item.text} color={item.color} position={{x: 0, y: 0,z: 0}} id={'cardDragPreview'} style={cardStyle} labels={item.labels} />
       default:
         return null
     }

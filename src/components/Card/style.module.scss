@@ -27,3 +27,20 @@
   min-height: 120px;
   line-height: 2;
 }
+
+.label {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 12px;
+  color: #7e7e7e;
+}
+
+.label-name {
+  min-width: 80px;
+}
+
+.label-value {
+  margin-left: 10px;
+  min-width: 70px;
+} 

@@ -61,7 +61,6 @@ export class CardsUseCase implements ICardsUseCase {
   async findAll(): Promise<ICard[]> {
     this.presentation.setLoading(true);
     const found = await this.repository.findAll();
-    console.log(found);
     if (found) {
       this.presentation.setLoading(false);
       this.presentation.viewCardAll(found);

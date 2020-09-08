@@ -2,7 +2,7 @@ import React, {useCallback, useMemo} from 'react';
 import { useSelector } from 'react-redux';
 import cn from 'classnames/bind';
 import styles from './style.module.scss';
-import { ICard, IColor } from 'core/entities/card';
+import { ICard, IColor } from 'core';
 import { useCardsPresentation } from 'presentations/cards';
 import { useCardsLocalStorageRepository } from 'repositories/cards';
 import { CardsUseCase } from 'core/usecases/cards';
@@ -10,7 +10,9 @@ import { CardsUseCase } from 'core/usecases/cards';
 const cx = cn.bind(styles);
 
 type Props = {
-  card: ICard
+  card: ICard,
+  isHover: boolean,
+  setIsHover: React.Dispatch<boolean>
 }
 
 const ContextMenuColorSelector: React.FC<Props> = ({ card }) => {
@@ -38,6 +40,7 @@ const ContextMenuColorSelector: React.FC<Props> = ({ card }) => {
           const border = color === 'white';
           return (
             <li 
+              key={color}
               className={cx('color-item', {'is-active': isActive, border})} 
               style={{backgroundColor: color}} 
               onClick={() => {handleClickColor(color)}}

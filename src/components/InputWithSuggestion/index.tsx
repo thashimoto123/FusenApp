@@ -1,6 +1,9 @@
 import React, { useState, useCallback, useRef } from 'react';
 import SuggestionList from 'components/SuggestionList';
-import './style.scss';
+import cn from 'classnames/bind';
+import styles from './style.module.scss';
+
+const cx = cn.bind(styles);
 
 const InputWithSuggestion:React.FC = () => {
   const words = ['オレンジ','オレオ','おれんち','オンザムーン','orange','oreo', 'on the moon'];
@@ -15,7 +18,7 @@ const InputWithSuggestion:React.FC = () => {
   }, [setText, setIsFocus, inputRef]);
 
   return (
-    <div className="input-wrap">
+    <div className={cx('input-wrap')}>
       <input 
         ref={inputRef}
         type="text"

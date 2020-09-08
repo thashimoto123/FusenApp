@@ -11,13 +11,13 @@ export const useContextMenu = (parentRef: React.MutableRefObject<HTMLDivElement 
 
   // ContextMenu非表示関数を登録
   useLayoutEffect(() => {
-    parentRef.current!.addEventListener('contextmenu', hideContextMenu)
-    parentRef.current!.addEventListener('click', hideContextMenu)
+    parentRef.current!.addEventListener('contextmenu', hideContextMenu);
+    parentRef.current!.addEventListener('click', hideContextMenu);
     return () => {
       if (parentRef !== null) {
 
-        parentRef.current!.removeEventListener('contextmenu', hideContextMenu)
-        parentRef.current!.removeEventListener('click', hideContextMenu)
+        parentRef.current!.removeEventListener('contextmenu', hideContextMenu);
+        parentRef.current!.removeEventListener('click', hideContextMenu);
       }
     }
   }, [parentRef, hideContextMenu]);

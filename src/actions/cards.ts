@@ -1,4 +1,4 @@
-import { ICard} from 'core/entities/card';
+import { ICard } from 'core';
 
 export const UPDATE_CARDS = 'UPDATE_CARDS';
 export const updateCards = (payload: {cards: ICard[] }) => ({

@@ -8,7 +8,8 @@ import  CardList, {
   HandleClickCardFactory, 
   HandleRightClickCardFactory, 
   HandleChangeTextFactory,
-  HandleDragCardFactory
+  HandleDragCardFactory,
+  HandleMouseDownFactory
 } from 'components/CardList';
 import AddCardInputWithButton from 'components/AddCardInputWithButton';
 import { useContextMenu } from './hooks';
@@ -42,7 +43,23 @@ const Board: React.FC<BoardProps> = ({
   const cardsRepository = useCardsLocalStorageRepository();
   const cardsPresentation = useCardsPresentation({setLoading});
   const cardsUseCase = new CardsUseCase(cardsRepository, cardsPresentation);
-  const cards = useSelector(state => state.cards);
+
+  const cards = useSelector(state => {
+    return state.cards.map(card => {
+      const labels = card.labels.map(label => {
+        const lb = state.labelNames.find(l => l.id === label.id);
+        const name = lb ? lb.name : '';
+        return {
+          ...label,
+          name
+        }
+      })
+      return {
+        ...card,
+        labels
+      }
+    })
+  });
 
   useEffect(() => {
     cardsUseCase.findAll();
@@ -76,38 +93,35 @@ const Board: React.FC<BoardProps> = ({
     }
   }, [cardsRepository, cardsPresentation, cardsUseCase]);
 
-  const handleDragCardFactory: HandleDragCardFactory = useCallback((card: ICard) => {
+  const handleMouseDownFactory: HandleMouseDownFactory = useCallback((card: ICard) => {
     return (ev: React.MouseEvent<HTMLDivElement>) => {
-      cardsUseCase.edit({
-        id: card.id,
-        position: {
-          ...card.position,
-          x: ev.pageX,
-          y: ev.pageY
-        }
-      })
+      setContextMenuView(false);
     }
-  }, [cardsRepository, cardsPresentation, cardsUseCase]);
+  }, [setContextMenuView]);
 
   return (
     <div ref={boardRef} className={cx('board')}>
       <div ref={overlayRef} className={cx('overlay')}></div>
-      <CardListComponent 
-        style={{zIndex: 2}}
-        cardList={cards}
-        handleClickCardFactory={handleClickCardFactory}
-        handleRightClickCardFactory={handleRightClickCardFactory}
-        handleChangeTextFactory={handleChangeTextFactory}
-        handleDragCardFactory={handleDragCardFactory}
-      />
+      { !loading && (
+        <>
+          <CardListComponent 
+            style={{zIndex: 2}}
+            cardList={cards}
+            handleClickCardFactory={handleClickCardFactory}
+            handleRightClickCardFactory={handleRightClickCardFactory}
+            handleChangeTextFactory={handleChangeTextFactory}
+            handleMouseDownFactory={handleMouseDownFactory}
+          />
 
-      <AddCardInputWithButton style={{
-        position: 'absolute',
-        bottom: '200px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        zIndex: 3,
-      }} />
+          <AddCardInputWithButton style={{
+            position: 'absolute',
+            bottom: '200px',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            zIndex: 3,
+          }} />
+        </>
+      )}
 
       { (contextMenuView && contextMenuCardId) && 
         <ContextMenu position={contextMenuPosition} cardId={contextMenuCardId} cardsUseCase={cardsUseCase} setIsShow={setContextMenuView} />
