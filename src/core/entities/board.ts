@@ -1,4 +1,4 @@
-import {uuid} from 'uuidv4';
+import { v4 as uuidv4 } from 'uuid';
 import {ICard, IColor} from './card';
 import {IUser} from './user';
 
@@ -19,11 +19,11 @@ export const initialColors: IColor[] = ['white','rgb(246, 236, 191)','rgb(215, 2
 
 export const initialLabelNames: ILabelName[] = [
 {
-  id: uuid(),
+  id: uuidv4(),
   name: '作成者'
 },
 {
-  id: uuid(),
+  id: uuidv4(),
   name: 'カテゴリー'
 }
 ];
@@ -42,7 +42,7 @@ export class Board implements IBoard {
   labelNames: ILabelName[];
   users: IUser[];
   constructor(props?:BoardProps) {
-    this.id = props?.id || uuid();
+    this.id = props?.id || uuidv4();
     this.cards = props?.cards || [];
     this.colors = props?.colors || initialColors;
     this.labelNames = props?.labelNames || initialLabelNames;

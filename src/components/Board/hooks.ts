@@ -10,17 +10,19 @@ export const useContextMenu = (parentRef: React.MutableRefObject<HTMLDivElement 
   },[setContextMenuView]);
 
   // ContextMenu非表示関数を登録
+  const parent = parentRef.current;
   useLayoutEffect(() => {
-    parentRef.current!.addEventListener('contextmenu', hideContextMenu);
-    parentRef.current!.addEventListener('click', hideContextMenu);
+    if (!parent) return;
+    parent!.addEventListener('contextmenu', hideContextMenu);
+    parent!.addEventListener('click', hideContextMenu);
     return () => {
-      if (parentRef !== null) {
+      if (parent !== null) {
 
-        parentRef.current!.removeEventListener('contextmenu', hideContextMenu);
-        parentRef.current!.removeEventListener('click', hideContextMenu);
+        parent!.removeEventListener('contextmenu', hideContextMenu);
+        parent!.removeEventListener('click', hideContextMenu);
       }
     }
-  }, [parentRef, hideContextMenu]);
+  }, [parent, hideContextMenu]);
 
   return {
     setContextMenuPosition,

@@ -1,14 +1,14 @@
 import { Reducer } from 'redux';
 import { ICard } from 'core/entities/card';
 import * as actions from 'actions/cards';
-import { uuid } from 'uuidv4';
+import { v4 as uuidv4 } from 'uuid';
 
 type Action = ReturnType<typeof actions.updateCards>
 
 export type State = ICard[];
 
 export const initialCardState = {
-  id: uuid(),
+  id: uuidv4(),
   text: '',
   labels: [],
   color: 'white',

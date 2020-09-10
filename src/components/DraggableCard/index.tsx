@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDrag } from 'react-dnd';
 import { getEmptyImage } from 'react-dnd-html5-backend';
 import Card, { CardProps } from 'components/Card';
@@ -19,9 +19,9 @@ const DraggableCard: React.FC<CardProps> = (props) => {
     }),
   });
 
-  useEffect(() => {
+ useEffect(() => {
     preview(getEmptyImage())
-  }, []);
+  }, [preview]);
 
   if (isDragging) {
     return <div ref={drag} style={{opacity: 1}} />

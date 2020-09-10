@@ -19,7 +19,7 @@ export const useSuggestion: UseSuggestion = (str, list, callbackSelectSuggestion
 
   const suggestions = useMemo(() => {
     return filter(str, list);
-  }, [str, list]);
+  }, [str, list, filter]);
 
   const handleKeydownArrowUp = useCallback(createKeydownHandler({
     key: 'ArrowUp',

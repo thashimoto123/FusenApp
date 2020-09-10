@@ -1,4 +1,4 @@
-import {uuid} from 'uuidv4';
+import { v4 as uuidv4 } from 'uuid';
 import { initialColors, initialLabelNames } from './board';
 
 export interface ILabel {
@@ -33,7 +33,7 @@ export class Card implements ICard {
   labels: ICard['labels'];
   position: ICard['position'];
   constructor({
-    id = uuid(),
+    id = uuidv4(),
     text = '',
     color = initialColors[0],
     labels = [{

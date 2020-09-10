@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback, useEffect } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
 import cn from 'classnames/bind';
 import styles from './style.module.scss';
 
@@ -52,7 +52,7 @@ const Card: React.FC<CardProps> = ({
       zIndex: position.z,
       ...style
     }
-  },[color, position]);
+  },[color, position, style]);
 
 
   const handleDoubleClick = useCallback(() => {
@@ -94,23 +94,23 @@ const Card: React.FC<CardProps> = ({
   )
 }
 
-function renderLabel(list: {id: string, name: string, value: string}[]) {
-  if (list.length === 0) return <></>;
-  return (
-    <ul>
-      {
-        list.map(label => {
-          if (!label.name) return <></>;
-          return (
-            <li key={label.name + '_' + label.value} className={cx('label')}>
-              <div className={cx("label-name")}>{label.name}</div>:
-              <div className={cx("label-value")}>{label.value}</div>
-            </li>
-          )
-        })
-      }
-    </ul>
-  )
-}
+// function renderLabel(list: {id: string, name: string, value: string}[]) {
+//   if (list.length === 0) return <></>;
+//   return (
+//     <ul>
+//       {
+//         list.map(label => {
+//           if (!label.name) return <></>;
+//           return (
+//             <li key={label.name + '_' + label.value} className={cx('label')}>
+//               <div className={cx("label-name")}>{label.name}</div>:
+//               <div className={cx("label-value")}>{label.value}</div>
+//             </li>
+//           )
+//         })
+//       }
+//     </ul>
+//   )
+// }
 
 export default Card

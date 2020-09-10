@@ -8,12 +8,11 @@ import  CardList, {
   HandleClickCardFactory, 
   HandleRightClickCardFactory, 
   HandleChangeTextFactory,
-  HandleDragCardFactory,
   HandleMouseDownFactory
 } from 'components/CardList';
 import AddCardInputWithButton from 'components/AddCardInputWithButton';
 import { useContextMenu } from './hooks';
-import { CardsUseCase } from 'core';
+import { CardsUseCase, ICardsUseCase } from 'core';
 import { useCardsLocalStorageRepository } from 'repositories/cards';
 import { useCardsPresentation } from 'presentations/cards';
 import styles from './style.module.scss';
@@ -43,6 +42,7 @@ const Board: React.FC<BoardProps> = ({
   const cardsRepository = useCardsLocalStorageRepository();
   const cardsPresentation = useCardsPresentation({setLoading});
   const cardsUseCase = new CardsUseCase(cardsRepository, cardsPresentation);
+  const initialCardsUseCase = useRef<ICardsUseCase>(new CardsUseCase(cardsRepository, cardsPresentation));
 
   const cards = useSelector(state => {
     return state.cards.map(card => {
@@ -62,8 +62,8 @@ const Board: React.FC<BoardProps> = ({
   });
 
   useEffect(() => {
-    cardsUseCase.findAll();
-  }, []);
+    initialCardsUseCase.current.findAll();
+  }, [initialCardsUseCase]);
 
   // コンテキストメニューを表示する関数を作成する関数
   const handleRightClickCardFactory: HandleRightClickCardFactory = useCallback((card: ICard) => {
@@ -91,7 +91,7 @@ const Board: React.FC<BoardProps> = ({
         text: ev.target?.value ?? ''
       })
     }
-  }, [cardsRepository, cardsPresentation, cardsUseCase]);
+  }, [cardsUseCase]);
 
   const handleMouseDownFactory: HandleMouseDownFactory = useCallback((card: ICard) => {
     return (ev: React.MouseEvent<HTMLDivElement>) => {

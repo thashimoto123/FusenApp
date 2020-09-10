@@ -1,30 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import InputWithSuggestion from 'components/InputWithSuggestion';
+import React, { useState, useEffect, useRef } from 'react';
 import DroppableBoard from 'components/DroppableBoard';
 import CustomDragLayer from 'components/CustomDragLayer';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { BoardsUseCase } from 'core';
+import { BoardsUseCase, IBoardsUseCase } from 'core';
 import { useBoardsPresentation } from 'presentations/boards';
 import { useBoardsLocalStorageRepository } from 'repositories/boards';
 
-const layerStyles: React.CSSProperties = {
-  position: 'fixed',
-  pointerEvents: 'none',
-  zIndex: 100,
-  left: 0,
-  top: 0,
-  width: 'calc(100vw - 40px)',
-  minHeight: '100vh',
-}
-
 function App() {
-  const [loading, setLoading] = useState<boolean>(false);
-  const useCase = useCaseFactory(setLoading);
+  const [, setLoading] = useState<boolean>(false);
+  const useCase = useRef<IBoardsUseCase>(useCaseFactory(setLoading));
 
   useEffect(() => {
-    useCase.findAll();
-  }, []);
+    useCase.current.findAll();
+  }, [useCase]);
 
   return (
     <div className="App">

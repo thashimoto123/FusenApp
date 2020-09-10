@@ -1,12 +1,6 @@
 import { IBoardRepository, IBoard, Board } from 'core';
-import { Dispatch } from 'redux';
-import { useSelector, useDispatch } from 'react-redux';
-import  * as actions  from 'actions/boards';
-import { StoreState } from 'store';
 
 export const useBoardsLocalStorageRepository = (): IBoardRepository => {
-  const dispatch = useDispatch();
-
   const find: IBoardRepository['find'] = async (id: string) => {
     let boardsJSON: string | null = localStorage.getItem('boards');
     if (boardsJSON) {

@@ -31,8 +31,7 @@ const ContextMenuLabelEditor: React.FC<Props> = ({ card, setIsHover, isHover }) 
         labels: newLabels
       });
     }
-  }, [card, cardsUseCase, labelNames]);
-  console.log(labelNames)
+  }, [card, cardsUseCase]);
 
   return (
     <ul className={cx('label-list')}>

@@ -1,11 +1,7 @@
 import { ICardRepository, ICard, IBoard } from 'core';
-import { Dispatch } from 'redux';
-import { useSelector, useDispatch } from 'react-redux';
-import  * as actions  from 'actions/cards';
-import { StoreState } from 'store';
+import { useSelector } from 'react-redux';
 
 export const useCardsLocalStorageRepository = (): ICardRepository => {
-  const dispatch = useDispatch();
   const cards = useSelector(state => state.cards);
   let board = useSelector(state => ({
     id: state.boards.currentId,
@@ -42,7 +38,6 @@ export const useCardsLocalStorageRepository = (): ICardRepository => {
     } else {
       boards.push(board);
     }
-    console.log(boards);
     localStorage.setItem('boards', JSON.stringify(boards));
   }
 

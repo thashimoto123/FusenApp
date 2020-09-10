@@ -14,7 +14,6 @@ const InputWithSuggestion:React.FC = () => {
     setText(text);
     setIsFocus(false);
     inputRef?.current?.blur();
-    console.log(text);
   }, [setText, setIsFocus, inputRef]);
 
   return (

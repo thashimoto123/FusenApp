@@ -17,7 +17,6 @@ const AddCardInputWithButton: React.FC<AddCardInputWithButtonProps> = (props) =>
   const presentation = useCardsPresentation({ setLoading });
   const cardsUseCase = new CardsUseCase(repository, presentation);
 
-
   const initialLabels = labelNames.map(labelName => ({
     id: labelName.id,
     value: ''
@@ -32,7 +31,7 @@ const AddCardInputWithButton: React.FC<AddCardInputWithButtonProps> = (props) =>
       labels: initialLabels
     });
     setText('');
-  }, [cardsUseCase, text]);
+  }, [cardsUseCase, text, initialLabels]);
 
   const handleChange = useCallback((ev: React.ChangeEvent<HTMLInputElement>) => { 
     setText(ev.target.value);
@@ -47,7 +46,7 @@ const AddCardInputWithButton: React.FC<AddCardInputWithButtonProps> = (props) =>
       disabled: loading,
       value: text,
     }
-  }, [props, handleSubmit, loading]);
+  }, [props, handleSubmit, handleChange, text, loading]);
 
   return <InputWithButton {...inputWithButtonProps}  />
 }
