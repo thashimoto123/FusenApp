@@ -43,7 +43,12 @@ const Board: React.FC<BoardProps> = ({
   const cardsPresentation = useCardsPresentation({setLoading});
   const cardsUseCase = new CardsUseCase(cardsRepository, cardsPresentation);
   const initialCardsUseCase = useRef<ICardsUseCase>(new CardsUseCase(cardsRepository, cardsPresentation));
+  
+  useEffect(() => {
+    initialCardsUseCase.current.findAll();
+  }, [initialCardsUseCase]);
 
+  // ラベルネーム情報を追加したカードリスト
   const cards = useSelector(state => {
     return state.cards.map(card => {
       const labels = card.labels.map(label => {
@@ -61,9 +66,6 @@ const Board: React.FC<BoardProps> = ({
     })
   });
 
-  useEffect(() => {
-    initialCardsUseCase.current.findAll();
-  }, [initialCardsUseCase]);
 
   // コンテキストメニューを表示する関数を作成する関数
   const handleRightClickCardFactory: HandleRightClickCardFactory = useCallback((card: ICard) => {

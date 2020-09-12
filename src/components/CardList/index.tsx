@@ -1,6 +1,10 @@
 import React from 'react';
 import { ICard } from 'core';
 import Card, { CardProps } from 'components/Card';
+import cn from 'classnames/bind';
+import styles from './style.module.scss';
+
+const cx = cn.bind(styles);
 
 type CardType = {
   id: ICard['id'];
@@ -41,7 +45,7 @@ const CardList: React.FC<CardListProps> = ({
   handleMouseDownFactory = defaultEmptyFactory,
 }) => {
   return (
-    <div>
+    <div className={cx('cardList')}>
       {
         cardList.map((card: CardType) => {
           const handleClick = handleClickCardFactory(card);

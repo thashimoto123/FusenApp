@@ -27,7 +27,7 @@ const DraggableCard: React.FC<CardProps> = (props) => {
     return <div ref={drag} style={{opacity: 1}} />
   }
   return (
-    <Card {...props} cardRef={drag} />
+    <Card {...props} style={{position: 'absolute'}} cardRef={drag} />
   )
 }
 
