@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import cn from 'classnames/bind';
 import { ICard } from 'core';
@@ -8,7 +8,8 @@ import  CardList, {
   HandleClickCardFactory, 
   HandleRightClickCardFactory, 
   HandleChangeTextFactory,
-  HandleMouseDownFactory
+  HandleMouseDownFactory,
+  CardType
 } from 'components/CardList';
 import AddCardInputWithButton from 'components/AddCardInputWithButton';
 import { useContextMenu } from './hooks';
@@ -19,14 +20,18 @@ import styles from './style.module.scss';
 
 const cx = cn.bind(styles);
 
+export type SortFunc = (cards: CardType[]) => CardType[];
+
 export type BoardProps = {
   boardRef?: any,
   CardListComponent?: React.FC<CardListProps>
+  sortFunc?: SortFunc
 }
 
 const Board: React.FC<BoardProps> = ({
   boardRef = null,
-  CardListComponent = CardList
+  CardListComponent = CardList,
+  sortFunc = (cards) => cards
 }) => {
   // const cardList = useSelector(state => { return state.cardList; });
   const [loading, setLoading] = useState<boolean>(false);
@@ -43,7 +48,7 @@ const Board: React.FC<BoardProps> = ({
   const cardsPresentation = useCardsPresentation({setLoading});
   const cardsUseCase = new CardsUseCase(cardsRepository, cardsPresentation);
   const initialCardsUseCase = useRef<ICardsUseCase>(new CardsUseCase(cardsRepository, cardsPresentation));
-  
+
   useEffect(() => {
     initialCardsUseCase.current.findAll();
   }, [initialCardsUseCase]);
@@ -66,12 +71,23 @@ const Board: React.FC<BoardProps> = ({
     })
   });
 
+  const sortedCards = useMemo(() => {
+    return sortFunc(cards)
+  },[cards, sortFunc]);
+
 
   // コンテキストメニューを表示する関数を作成する関数
   const handleRightClickCardFactory: HandleRightClickCardFactory = useCallback((card: ICard) => {
-    return (ev: Event) => {
+    return (ev: React.MouseEvent<HTMLDivElement>) => {
       ev.preventDefault();
-      setContextMenuPosition({x: card.position.x + 300, y: card.position.y});
+      const node = ev.currentTarget as HTMLElement;
+      const rect = node.getBoundingClientRect();
+      const width = node.offsetWidth;
+      let left:number = rect.left + width;
+      if (window.innerWidth < rect.left + width + 280) {
+        left = rect.left - 180;
+      }
+      setContextMenuPosition({x: left, y: rect.top});
       setContextMenuView(true);
       setContextMenuCardId(card.id);
     }
@@ -79,7 +95,7 @@ const Board: React.FC<BoardProps> = ({
 
   // コンテキストメニューを非表示にする関数を作成する関数
   const handleClickCardFactory: HandleClickCardFactory = useCallback(() => {
-    return (ev: Event) => {
+    return (ev: React.MouseEvent<HTMLDivElement>) => {
       ev.preventDefault();
       setContextMenuView(false);
     }
@@ -108,7 +124,7 @@ const Board: React.FC<BoardProps> = ({
         <>
           <CardListComponent 
             style={{zIndex: 2}}
-            cardList={cards}
+            cardList={sortedCards}
             handleClickCardFactory={handleClickCardFactory}
             handleRightClickCardFactory={handleRightClickCardFactory}
             handleChangeTextFactory={handleChangeTextFactory}

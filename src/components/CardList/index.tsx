@@ -6,16 +6,16 @@ import styles from './style.module.scss';
 
 const cx = cn.bind(styles);
 
-type CardType = {
+export type CardType = {
   id: ICard['id'];
   text: ICard['text'];
   position: ICard['position'];
   color: ICard['color'];
-  labels: {id: string,name: string, value: string}[];
+  labels: {id: string, name: string, value: string}[];
 }
 
-export type HandleClickCardFactory = (card: CardType) => (ev: Event) => void;
-export type HandleRightClickCardFactory = (card: CardType) => (ev: Event) => void;
+export type HandleClickCardFactory = (card: CardType) => (ev: React.MouseEvent<HTMLDivElement>) => void;
+export type HandleRightClickCardFactory = (card: CardType) => (ev: React.MouseEvent<HTMLDivElement>) => void;
 export type HandleChangeTextFactory = (card: CardType) => (ev: React.ChangeEvent<HTMLTextAreaElement>) => void;
 export type HandleDragCardFactory = (card: CardType) => (ev: React.MouseEvent<HTMLDivElement>) => void;
 export type HandleMouseDownFactory = (card: CardType) => (ev: React.MouseEvent<HTMLDivElement>) => void;

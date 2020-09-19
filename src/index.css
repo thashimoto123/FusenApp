@@ -147,13 +147,14 @@ html, body {
 
 body,
 input,
+select,
 textarea,
 button,
 pre {
   font-family: "Yu Gothic", YuGothic;
   font-size: 14px;
   color: #6e7073;
-  font-weight: bold;
+  font-weight: medium;
 }
 
 body {
