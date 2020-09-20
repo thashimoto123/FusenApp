@@ -1,7 +1,6 @@
-import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useRef, useCallback } from 'react';
 import cn from 'classnames/bind';
-import { ICard } from 'core';
+import { ICard, ICardsUseCase } from 'core';
 import ContextMenu from 'components/ContextMenu';
 import  CardList, { 
   CardListProps,
@@ -13,28 +12,27 @@ import  CardList, {
 } from 'components/CardList';
 import AddCardInputWithButton from 'components/AddCardInputWithButton';
 import { useContextMenu } from './hooks';
-import { CardsUseCase, ICardsUseCase } from 'core';
-import { useCardsLocalStorageRepository } from 'repositories/cards';
-import { useCardsPresentation } from 'presentations/cards';
 import styles from './style.module.scss';
 
 const cx = cn.bind(styles);
 
-export type SortFunc = (cards: CardType[]) => CardType[];
-
 export type BoardProps = {
-  boardRef?: any,
-  CardListComponent?: React.FC<CardListProps>
-  sortFunc?: SortFunc
+  boardRef?: any;
+  CardListComponent?: React.FC<CardListProps>;
+  cardsUseCase: ICardsUseCase;
+  cardList?: CardType[]
+  loading?: boolean;
 }
 
 const Board: React.FC<BoardProps> = ({
   boardRef = null,
   CardListComponent = CardList,
-  sortFunc = (cards) => cards
+  cardsUseCase,
+  cardList = [],
+  loading = false
 }) => {
   // const cardList = useSelector(state => { return state.cardList; });
-  const [loading, setLoading] = useState<boolean>(false);
+  
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const {
     setContextMenuPosition,
@@ -44,36 +42,6 @@ const Board: React.FC<BoardProps> = ({
     contextMenuCardId,
     setContextMenuCardId
   } = useContextMenu(overlayRef);
-  const cardsRepository = useCardsLocalStorageRepository();
-  const cardsPresentation = useCardsPresentation({setLoading});
-  const cardsUseCase = new CardsUseCase(cardsRepository, cardsPresentation);
-  const initialCardsUseCase = useRef<ICardsUseCase>(new CardsUseCase(cardsRepository, cardsPresentation));
-
-  useEffect(() => {
-    initialCardsUseCase.current.findAll();
-  }, [initialCardsUseCase]);
-
-  // ラベルネーム情報を追加したカードリスト
-  const cards = useSelector(state => {
-    return state.cards.map(card => {
-      const labels = card.labels.map(label => {
-        const lb = state.labelNames.find(l => l.id === label.id);
-        const name = lb ? lb.name : '';
-        return {
-          ...label,
-          name
-        }
-      })
-      return {
-        ...card,
-        labels
-      }
-    })
-  });
-
-  const sortedCards = useMemo(() => {
-    return sortFunc(cards)
-  },[cards, sortFunc]);
 
 
   // コンテキストメニューを表示する関数を作成する関数
@@ -124,7 +92,7 @@ const Board: React.FC<BoardProps> = ({
         <>
           <CardListComponent 
             style={{zIndex: 2}}
-            cardList={sortedCards}
+            cardList={cardList}
             handleClickCardFactory={handleClickCardFactory}
             handleRightClickCardFactory={handleRightClickCardFactory}
             handleChangeTextFactory={handleChangeTextFactory}

@@ -20,7 +20,7 @@ export const initialBoardState: State = {
   currentId: '0',
   isLocal: true,
   boards: [{id: '0'}],
-  layout: LAYOUT_SORT,
+  layout: LAYOUT_FREE,
   sort: 'text'
 };
 

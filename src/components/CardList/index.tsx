@@ -1,17 +1,21 @@
 import React from 'react';
-import { ICard } from 'core';
+import { ICard, ILabel } from 'core';
 import Card, { CardProps } from 'components/Card';
 import cn from 'classnames/bind';
 import styles from './style.module.scss';
 
 const cx = cn.bind(styles);
 
+interface LabelForView extends ILabel {
+  name: string
+}
+
 export type CardType = {
   id: ICard['id'];
   text: ICard['text'];
   position: ICard['position'];
   color: ICard['color'];
-  labels: {id: string, name: string, value: string}[];
+  labels: LabelForView[];
 }
 
 export type HandleClickCardFactory = (card: CardType) => (ev: React.MouseEvent<HTMLDivElement>) => void;

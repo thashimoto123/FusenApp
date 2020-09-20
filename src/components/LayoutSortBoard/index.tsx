@@ -1,15 +1,57 @@
-import React from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useSelector } from 'react-redux';
-import Board, { SortFunc } from 'components/Board';
+import { CardsUseCase, ICardsUseCase } from 'core';
+import { useCardsLocalStorageRepository } from 'repositories/cards';
+import { useCardsPresentation } from 'presentations/cards';
+import Board from 'components/Board';
+import { CardType } from 'components/CardList';
 import ImmovableCardList from 'components/ImmovableCardList';
 
 const LayoutSortBoard: React.FC = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const cardsRepository = useCardsLocalStorageRepository();
+  const cardsPresentation = useCardsPresentation({setLoading});
+  const cardsUseCase = new CardsUseCase(cardsRepository, cardsPresentation);
+  const initialCardsUseCase = useRef<ICardsUseCase>(new CardsUseCase(cardsRepository, cardsPresentation));
+
+  useEffect(() => {
+    initialCardsUseCase.current.findAll();
+  }, [initialCardsUseCase]);
+
+  const cardList = useSelector(state => state.cards);
   const sort = useSelector(state => state.boards.sort);
-  const sortFunc = sort === 'text' ? textSort : sort === 'color' ? colorSort : labelSortFactory(sort.replace('label:',''));
+  const labelNames = useSelector(state => state.labelNames);
+
+  const sortType = /^label:.*/.test(sort) ? 'label' : sort;
+  const labelId = sort.replace('label:','');
+  const sortFunc = sort === 'text' ? textSort : sort === 'color' ? colorSort : labelSortFuncFactory(labelId);
+
+  // ラベルネーム情報を追加したカードリスト
+  const cards = cardList.map(card => {
+    const labels = card.labels.map(label => {
+      const lb = labelNames.find(l => l.id === label.id);
+      const name = (sortType === 'label' && label.id === labelId) && lb ? lb.name : '';
+      return {
+        ...label,
+        name
+      }
+    })
+    return {
+      ...card,
+      labels
+    }
+  });
+
+  const sortedCards = useMemo(() => {
+    return sortFunc(cards)
+  },[cards, sortFunc]);
+
   return (
-    <Board CardListComponent={ImmovableCardList} sortFunc={sortFunc} />
+    <Board CardListComponent={ImmovableCardList} cardList={sortedCards} loading={loading} cardsUseCase={cardsUseCase} />
   )
 }
+
+export type SortFunc = (cards: CardType[]) => CardType[];
 
 const textSort: SortFunc = (cards) => {
   const output = [...cards];
@@ -35,7 +77,7 @@ const colorSort: SortFunc = (cards) => {
   return output;
 }
 
-const labelSortFactory = (labelId: string): SortFunc => {
+const labelSortFuncFactory = (labelId: string): SortFunc => {
   return (cards) => {
     const output = [...cards];
     output.sort((a, b) => {

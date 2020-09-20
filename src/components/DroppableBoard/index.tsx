@@ -1,16 +1,10 @@
 import React from 'react';
-import Board from 'components/Board';
+import Board, { BoardProps } from 'components/Board';
 import { useDrop } from 'react-dnd';
-import { CardsUseCase } from 'core';
-import { useCardsLocalStorageRepository } from 'repositories/cards';
-import { useCardsPresentation } from 'presentations/cards';
 import { DropItem } from 'components/DraggableCard';
 import DraggableCardList from 'components/DraggableCardList';
 
-const DroppableBoard: React.FC = () => {
-  const repository = useCardsLocalStorageRepository();
-  const presentation = useCardsPresentation({});
-  const cardsUseCase = new CardsUseCase(repository, presentation);
+const DroppableBoard: React.FC<BoardProps> = (props) => {
   const [, drop] = useDrop({
     accept: 'card',
     drop(item: DropItem, monitor) {
@@ -22,7 +16,7 @@ const DroppableBoard: React.FC = () => {
       let x = Math.round(item.position.x + delta.x)
       let y = Math.round(item.position.y + delta.y)
 
-      cardsUseCase.edit({
+      props.cardsUseCase.edit({
         id: item.id,
         position: {
           x,
@@ -35,7 +29,7 @@ const DroppableBoard: React.FC = () => {
     },
   });
 
-  return <Board boardRef={drop} CardListComponent={DraggableCardList} />
+  return <Board {...props} boardRef={drop} CardListComponent={DraggableCardList} />
 }
 
 export default DroppableBoard

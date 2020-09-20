@@ -1,6 +1,5 @@
 import React from 'react';
 import CardList, { CardListProps, CardType } from 'components/CardList';
-import DraggableCard from 'components/DraggableCard';
 
 const ImmovableCardList: React.FC<CardListProps> = (props) => {
   const cardList = props.cardList.map((card: CardType) => {
