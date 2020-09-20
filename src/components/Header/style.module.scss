@@ -1,14 +1,18 @@
 .header {
   display: flex;
   align-items: center;
+  position: relative;
   padding: 40px 40px 0;
   font-size: 16px;
   font-weight: normal;
+  z-index: 2;
+  pointer-events: none;
 }
 
 label {
   display: inline-block;
   margin-right: 10px;
+  pointer-events: auto;
 }
 input[type="radio"] {
   position: absolute;
@@ -59,6 +63,7 @@ input[type="radio"]:checked + .radio {
 
 .sort {
   margin-left: 30px;
+  pointer-events: auto;
   select {
     border: 1px solid #ccc;
     background-color: transparent;

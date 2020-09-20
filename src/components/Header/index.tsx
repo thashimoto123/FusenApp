@@ -29,11 +29,11 @@ const Header: React.FC = () => {
         <form>
           レイアウト：
           <label>
-            <input type="radio" name="layout" checked={LAYOUT_FREE === selectedLayout} value={LAYOUT_FREE} onClick={() => { handleClickRadio(LAYOUT_FREE) }} /><div className={cx('radio')} />
+            <input type="radio" name="layout" defaultChecked={LAYOUT_FREE === selectedLayout} value={LAYOUT_FREE} onClick={() => { handleClickRadio(LAYOUT_FREE) }} /><div className={cx('radio')} />
             自由
           </label> 
           <label>
-            <input type="radio" name="layout" checked={LAYOUT_SORT === selectedLayout} value={LAYOUT_SORT} onClick={() => { handleClickRadio(LAYOUT_SORT) }} /><div className={cx('radio')} />
+            <input type="radio" name="layout" defaultChecked={LAYOUT_SORT === selectedLayout} value={LAYOUT_SORT} onClick={() => { handleClickRadio(LAYOUT_SORT) }} /><div className={cx('radio')} />
             並べる
            </label>
         </form>
@@ -47,7 +47,7 @@ const Header: React.FC = () => {
               <option value="color">カラー</option>
               {
                 labelNames.map((label) => {
-                  return <option value={"label:"+label.id}>ラベル：{label.name}</option>
+                  return <option key={label.id} value={"label:"+label.id}>ラベル：{label.name}</option>
                 })
               }
             </select>

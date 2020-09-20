@@ -42,7 +42,7 @@ const AddCardInputWithButton: React.FC<AddCardInputWithButtonProps> = (props) =>
       style: props.style,
       handleSubmit,
       handleChange,
-      buttonValue: '追加',
+      buttonValue: 'カードを追加',
       disabled: loading,
       value: text,
     }

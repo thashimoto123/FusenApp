@@ -90,6 +90,12 @@ const Board: React.FC<BoardProps> = ({
       <div ref={overlayRef} className={cx('overlay')}></div>
       { !loading && (
         <>
+          <AddCardInputWithButton style={{
+            position: 'relative',
+            marginBottom: '30px',
+            zIndex: 3,
+          }} />
+
           <CardListComponent 
             style={{zIndex: 2}}
             cardList={cardList}
@@ -99,13 +105,6 @@ const Board: React.FC<BoardProps> = ({
             handleMouseDownFactory={handleMouseDownFactory}
           />
 
-          <AddCardInputWithButton style={{
-            position: 'absolute',
-            bottom: '200px',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            zIndex: 3,
-          }} />
         </>
       )}
 

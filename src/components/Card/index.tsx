@@ -100,7 +100,7 @@ function renderLabel(list: {id: string, name: string, value: string}[]) {
     <ul>
       {
         list.map(label => {
-          if (!label.name) return <></>;
+          if (!label.name) return null;
           return (
             <li key={label.name + '_' + label.value} className={cx('label')}>
               <div className={cx("label-name")}>{label.name}</div>:
