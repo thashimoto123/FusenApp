@@ -62,7 +62,12 @@ const Card: React.FC<CardProps> = ({
     }
   },[color, position, style]);
 
-
+  const hDragStart = (ev: React.MouseEvent<HTMLElement>) => {
+    if (isFocus || focus) {
+      ev.preventDefault();
+    }
+  }
+  
   const hDoubleClick = useCallback((ev) => {
     setIsFocus(true);
     handleDoubleClick(ev);
@@ -88,6 +93,7 @@ const Card: React.FC<CardProps> = ({
       onContextMenu={handleRightClick} 
       onMouseDown={handleMouseDown} 
       onClick={handleClick}
+      onDragStart={hDragStart}
       onDrag={handleDrag}
       >
       {
