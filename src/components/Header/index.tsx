@@ -10,6 +10,7 @@ const cx = cn.bind(styles);
 const Header: React.FC = () => {
   const labelNames = useSelector(state => state.labelNames);
   const selectedLayout = useSelector(state => state.boards.layout);
+  const selectedSort = useSelector(state => state.boards.sort);
   const dispatch = useDispatch();
 
   const handleClickRadio = (layout: LayoutType) => {
@@ -22,7 +23,6 @@ const Header: React.FC = () => {
     const value = ev.target.options[index]?.value;
     dispatch(actions.updateSort({sort: value}));
   }
-
   return (
     <header className={cx('header')}>
       <div className={cx('layout')}>
@@ -43,11 +43,11 @@ const Header: React.FC = () => {
           <div className={cx('sort')}>
             並べ替え：
             <select name="" onChange={handleChangeSelect}>
-              <option value="text">テキスト</option>
-              <option value="color">カラー</option>
+              <option value="text" selected={selectedSort === 'text'}>テキスト</option>
+              <option value="color" selected={selectedSort === 'color'}>カラー</option>
               {
                 labelNames.map((label) => {
-                  return <option key={label.id} value={"label:"+label.id}>ラベル：{label.name}</option>
+                  return <option key={label.id} value={"label:"+label.id} selected={selectedSort === "label:"+label.id} >ラベル：{label.name}</option>
                 })
               }
             </select>
