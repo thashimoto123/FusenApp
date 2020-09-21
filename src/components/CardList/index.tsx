@@ -16,23 +16,29 @@ export type CardType = {
   position: ICard['position'];
   color: ICard['color'];
   labels: LabelForView[];
+  focus?: boolean;
+  active?: boolean;
 }
 
 export type HandleClickCardFactory = (card: CardType) => (ev: React.MouseEvent<HTMLDivElement>) => void;
+export type HandleDoubleClickCardFactory = (card: CardType) => (ev: React.MouseEvent<HTMLDivElement>) => void;
 export type HandleRightClickCardFactory = (card: CardType) => (ev: React.MouseEvent<HTMLDivElement>) => void;
 export type HandleChangeTextFactory = (card: CardType) => (ev: React.ChangeEvent<HTMLTextAreaElement>) => void;
 export type HandleDragCardFactory = (card: CardType) => (ev: React.MouseEvent<HTMLDivElement>) => void;
 export type HandleMouseDownFactory = (card: CardType) => (ev: React.MouseEvent<HTMLDivElement>) => void;
+export type HandleBlurFactory = (card: CardType) => (ev: React.FormEvent<HTMLInputElement>) => void;
 
 export type CardListProps = {
   style?: React.CSSProperties;
   ItemComponent?: React.FC<CardProps>;
   cardList: CardType[];
-  handleRightClickCardFactory?: HandleClickCardFactory;
-  handleClickCardFactory?: HandleRightClickCardFactory;
+  handleRightClickCardFactory?: HandleRightClickCardFactory;
+  handleClickCardFactory?: HandleClickCardFactory;
+  handleDoubleClickCardFactory?: HandleDoubleClickCardFactory;
   handleChangeTextFactory?: HandleChangeTextFactory;
   handleDragCardFactory?: HandleDragCardFactory;
   handleMouseDownFactory?: HandleMouseDownFactory;
+  handleBlurFactory?: HandleBlurFactory;
 }
 
 const defaultEmptyFactory = () => {
@@ -44,9 +50,11 @@ const CardList: React.FC<CardListProps> = ({
   cardList,
   handleClickCardFactory = defaultEmptyFactory,
   handleRightClickCardFactory = defaultEmptyFactory,
+  handleDoubleClickCardFactory = defaultEmptyFactory,
   handleChangeTextFactory = defaultEmptyFactory,
   handleDragCardFactory = defaultEmptyFactory,
   handleMouseDownFactory = defaultEmptyFactory,
+  handleBlurFactory = defaultEmptyFactory,
 }) => {
   return (
     <div className={cx('cardList')}>
@@ -54,9 +62,11 @@ const CardList: React.FC<CardListProps> = ({
         cardList.map((card: CardType) => {
           const handleClick = handleClickCardFactory(card);
           const handleRightClick = handleRightClickCardFactory(card);
+          const handleDoubleClick = handleDoubleClickCardFactory(card);
           const handleChange = handleChangeTextFactory(card);
           const handleDrag = handleDragCardFactory(card);
           const handleMouseDown = handleMouseDownFactory(card);
+          const handleBlur = handleBlurFactory(card);
 
           return (
             <ItemComponent 
@@ -66,11 +76,15 @@ const CardList: React.FC<CardListProps> = ({
               color={card.color} 
               labels={card.labels}
               position={card.position}
+              focus={!!card.focus}
+              active={!!card.active}
               handleClick={handleClick} 
               handleRightClick={handleRightClick}
+              handleDoubleClick={handleDoubleClick}
               handleChange={handleChange}
               handleDrag={handleDrag}
               handleMouseDown={handleMouseDown}
+              handleBlur={handleBlur}
             />
           )
         })

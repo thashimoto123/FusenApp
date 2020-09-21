@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import cn from 'classnames/bind';
 import styles from './style.module.scss';
@@ -9,13 +9,15 @@ import { ICard, ICardsUseCase } from 'core';
 const cx = cn.bind(styles);
 
 interface ContextMenuProps {
-  cardId: ICard['id'],
+  cardId: ICard['id'];
   position: {
     x: number,
     y: number
-  },
-  cardsUseCase: ICardsUseCase,
-  setIsShow: React.Dispatch<React.SetStateAction<boolean>>,
+  };
+  cardsUseCase: ICardsUseCase;
+  setIsShow: React.Dispatch<React.SetStateAction<boolean>>;
+  setCardId: React.Dispatch<React.SetStateAction<string | null>>;
+  setFocusCardId: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 const ContextMenu: React.FC<ContextMenuProps> = ({
@@ -23,15 +25,19 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
   position,
   children,
   cardsUseCase,
-  setIsShow
+  setIsShow,
+  setCardId,
+  setFocusCardId,
 }) => {
   const card: ICard | undefined = useSelector(state => state.cards.find(c => c.id === cardId));
+
   if (!card) return (<></>);
 
   const style = {
     top: position.y + 'px',
     left: position.x + 'px'
   }
+
 
   return (
     <div className={cx('context-menu')} style={style}>
@@ -48,6 +54,16 @@ const ContextMenu: React.FC<ContextMenuProps> = ({
           card={card}
           Component={() => {
             return <><i>&#xe801;</i>ラベルを設定</>
+          }}
+        />
+        <ContextMenuItem
+          card={card}
+          onClick={() => {
+            setIsShow(false);
+            setFocusCardId(card.id);
+          }}
+          Component={() => {
+            return <><i>&#xe807;</i>テキストを編集</>
           }}
         />
           

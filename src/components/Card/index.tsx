@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import cn from 'classnames/bind';
 import styles from './style.module.scss';
 
@@ -20,12 +20,16 @@ export interface CardProps {
     z: number
   },
   style?: React.CSSProperties,
+  focus?: boolean,
+  active?: boolean,
   handleChange?: (ev: React.ChangeEvent<HTMLTextAreaElement>) => void,
   handleClick?: (...args: any[]) => void,
   handleDoubleClick?: (...args: any[]) => void,
   handleRightClick?: (...args: any[]) => void,
   handleDrag?: (...args: any[]) => void,
   handleMouseDown?: (...args: any[]) => void,
+  handleBlur?: (...args: any[]) => void,
+  handleFocus?: (...args: any[]) => void,
 }
 
 const Card: React.FC<CardProps> = ({
@@ -36,14 +40,18 @@ const Card: React.FC<CardProps> = ({
   color,
   position,
   labels = [],
+  focus = false,
+  active = false,
   handleClick = () => {},
   handleChange = () => {},
   handleRightClick = () => {},
+  handleDoubleClick = () => {},
   handleDrag = () => {},
-  handleMouseDown = () => {}
+  handleMouseDown = () => {},
+  handleBlur = () => {}
 }) => {
-  const [isFocus, setIsFocus] = useState<boolean>(false);
-  const classname = cx('card');
+  const [isFocus, setIsFocus] = useState<boolean>(focus);
+  const classname = cx('card', { focus, active});
   const cardStyle = useMemo(() => {
     return {
       backgroundColor: color,
@@ -55,35 +63,41 @@ const Card: React.FC<CardProps> = ({
   },[color, position, style]);
 
 
-  const handleDoubleClick = useCallback(() => {
+  const hDoubleClick = useCallback((ev) => {
     setIsFocus(true);
-  }, [setIsFocus]);
+    handleDoubleClick(ev);
+  }, [setIsFocus, handleDoubleClick]);
 
-  const handleBlur = useCallback(() => {
+  const hBlur = useCallback(() => {
     setIsFocus(false);
   }, [setIsFocus]);
+
+  useEffect(() => {
+    setIsFocus(focus);
+  }, [focus, setIsFocus]);
 
 
   return (
     <div 
+      id={id}
       ref={cardRef}
       className={classname} 
       style={cardStyle} 
       draggable="true"
-      onDoubleClick={handleDoubleClick} 
+      onDoubleClick={hDoubleClick} 
       onContextMenu={handleRightClick} 
       onMouseDown={handleMouseDown} 
       onClick={handleClick}
       onDrag={handleDrag}
       >
       {
-        isFocus ? 
+        focus || isFocus ? 
           <textarea 
             className={cx('textarea')} 
             defaultValue={text} 
             autoFocus
             onChange={handleChange}
-            onBlur={handleBlur} /> 
+            onBlur={(ev) => {handleBlur(ev);hBlur();}} /> 
           :
           <pre className={cx('inner')}>{ text }</pre>
       }

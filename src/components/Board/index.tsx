@@ -1,13 +1,15 @@
-import React, { useRef, useCallback } from 'react';
+import React, { useRef, useCallback, useEffect } from 'react';
 import cn from 'classnames/bind';
 import { ICard, ICardsUseCase } from 'core';
 import ContextMenu from 'components/ContextMenu';
 import  CardList, { 
   CardListProps,
   HandleClickCardFactory, 
+  HandleDoubleClickCardFactory, 
   HandleRightClickCardFactory, 
   HandleChangeTextFactory,
   HandleMouseDownFactory,
+  HandleBlurFactory,
   CardType
 } from 'components/CardList';
 import AddCardInputWithButton from 'components/AddCardInputWithButton';
@@ -31,7 +33,6 @@ const Board: React.FC<BoardProps> = ({
   cardList = [],
   loading = false
 }) => {
-  // const cardList = useSelector(state => { return state.cardList; });
   
   const overlayRef = useRef<HTMLDivElement | null>(null);
   const {
@@ -40,7 +41,9 @@ const Board: React.FC<BoardProps> = ({
     contextMenuPosition,
     contextMenuView,
     contextMenuCardId,
-    setContextMenuCardId
+    setContextMenuCardId,
+    setFocusCardId,
+    focusCardId
   } = useContextMenu(overlayRef);
 
 
@@ -69,6 +72,14 @@ const Board: React.FC<BoardProps> = ({
     }
   }, [setContextMenuView]);
 
+  // コンテキストメニューを非表示にする関数を作成する関数
+  const handleDoubleClickCardFactory: HandleDoubleClickCardFactory = useCallback((card: ICard) => {
+    return (ev: React.MouseEvent<HTMLDivElement>) => {
+      ev.preventDefault();
+      setContextMenuCardId(card.id);
+    }
+  }, [setContextMenuCardId]);
+
   // カードのテキストを変更する関数を作成する関数
   const handleChangeTextFactory: HandleChangeTextFactory = useCallback((card: ICard) => {
     return (ev: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -79,11 +90,35 @@ const Board: React.FC<BoardProps> = ({
     }
   }, [cardsUseCase]);
 
+  // カードのフォーカスが外れた時にステートの値を初期値に設定する関数
+  const handleBlurFactory: HandleBlurFactory = useCallback((card: ICard) => {
+    return (ev: React.FormEvent<HTMLInputElement>) => {
+      setFocusCardId(null);
+      setContextMenuCardId(null);
+    }
+  }, [setFocusCardId,setContextMenuCardId]);
+
+
   const handleMouseDownFactory: HandleMouseDownFactory = useCallback((card: ICard) => {
     return (ev: React.MouseEvent<HTMLDivElement>) => {
       setContextMenuView(false);
     }
   }, [setContextMenuView]);
+
+  console.log(contextMenuCardId);
+  cardList.forEach(card => {
+    card.active = card.id === contextMenuCardId;
+    card.focus = card.id === focusCardId;
+  });
+
+  const contextMenuProps = {
+    position: contextMenuPosition,
+    cardId: contextMenuCardId || '',
+    setCardId: setContextMenuCardId,
+    cardsUseCase,
+    setIsShow: setContextMenuView,
+    setFocusCardId
+  }
 
   return (
     <div ref={boardRef} className={cx('board')}>
@@ -101,15 +136,17 @@ const Board: React.FC<BoardProps> = ({
             cardList={cardList}
             handleClickCardFactory={handleClickCardFactory}
             handleRightClickCardFactory={handleRightClickCardFactory}
+            handleDoubleClickCardFactory={handleDoubleClickCardFactory}
             handleChangeTextFactory={handleChangeTextFactory}
             handleMouseDownFactory={handleMouseDownFactory}
+            handleBlurFactory={handleBlurFactory}
           />
 
         </>
       )}
 
       { (contextMenuView && contextMenuCardId) && 
-        <ContextMenu position={contextMenuPosition} cardId={contextMenuCardId} cardsUseCase={cardsUseCase} setIsShow={setContextMenuView} />
+        <ContextMenu {...contextMenuProps} />
       }
     </div>
   )

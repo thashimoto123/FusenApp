@@ -5,8 +5,10 @@ export const useContextMenu = (parentRef: React.MutableRefObject<HTMLDivElement 
   const [contextMenuCardId, setContextMenuCardId] = useState<ICard['id'] | null>(null);
   const [contextMenuView, setContextMenuView] = useState<boolean>(false);
   const [contextMenuPosition, setContextMenuPosition] = useState<{x: number,y: number}>({x: 0, y: 0});
+  const [focusCardId, setFocusCardId] = useState<string| null>(null);
   const hideContextMenu = useCallback(() => {
     setContextMenuView(false);
+    setContextMenuCardId(null);
   },[setContextMenuView]);
 
   // ContextMenu非表示関数を登録
@@ -30,6 +32,8 @@ export const useContextMenu = (parentRef: React.MutableRefObject<HTMLDivElement 
     contextMenuPosition,
     contextMenuView,
     contextMenuCardId,
-    setContextMenuCardId
+    setContextMenuCardId,
+    focusCardId,
+    setFocusCardId
   }
 }
