@@ -1,7 +1,8 @@
 import React, { useRef, useCallback, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import cn from 'classnames/bind';
 import { ICard, ICardsUseCase } from 'core';
-import ContextMenu from 'components/ContextMenu';
+import ContextMenuWithItems from 'components/ContextMenuWithItems';
 import  CardList, { 
   CardListProps,
   HandleClickCardFactory, 
@@ -45,7 +46,7 @@ const Board: React.FC<BoardProps> = ({
     setFocusCardId,
     focusCardId
   } = useContextMenu(overlayRef);
-
+  const card: ICard | undefined = useSelector(state => state.cards.find(c => c.id === contextMenuCardId));
 
   // コンテキストメニューを表示する関数を作成する関数
   const handleRightClickCardFactory: HandleRightClickCardFactory = useCallback((card: ICard) => {
@@ -112,6 +113,7 @@ const Board: React.FC<BoardProps> = ({
   });
 
   const contextMenuProps = {
+    card,
     position: contextMenuPosition,
     cardId: contextMenuCardId || '',
     setCardId: setContextMenuCardId,
@@ -146,7 +148,7 @@ const Board: React.FC<BoardProps> = ({
       )}
 
       { (contextMenuView && contextMenuCardId) && 
-        <ContextMenu {...contextMenuProps} />
+        <ContextMenuWithItems {...contextMenuProps} style={{zIndex: 3}} />
       }
     </div>
   )

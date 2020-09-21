@@ -55,9 +55,10 @@ const CardList: React.FC<CardListProps> = ({
   handleDragCardFactory = defaultEmptyFactory,
   handleMouseDownFactory = defaultEmptyFactory,
   handleBlurFactory = defaultEmptyFactory,
+  style = {}
 }) => {
   return (
-    <div className={cx('cardList')}>
+    <div className={cx('cardList')} style={style}>
       {
         cardList.map((card: CardType) => {
           const handleClick = handleClickCardFactory(card);
