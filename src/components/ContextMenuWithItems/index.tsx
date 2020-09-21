@@ -1,4 +1,5 @@
 import React from 'react';
+import store from 'store';
 import ContextMenu, { ContextMenuProps, ContextMenuItem } from 'components/ContextMenu';
 import ContextMenuColorSelector from 'components/ContextMenuColorSelector';
 import ContextMenuLabelEditor from 'components/ContextMenuLabelEditor';
@@ -34,6 +35,18 @@ const ContextMenuWithItems: React.FC<ContextMenuProps> = (props) => {
             return <><i>&#xe807;</i>テキストを編集</>
           }}
         />
+        <ContextMenuItem
+          card={props.card}
+          cardsUseCase={props.cardsUseCase}
+          onClick={() => {
+            props.cardsUseCase.updateAll(toForeground(props!.card!.id));
+            props.setIsShow(false);
+            props.setCardId(null);
+          }}
+          Component={() => {
+            return <><i>&#xf102;</i>最前面に移動</>
+          }}
+        />
           
         <hr />
         <ContextMenuItem 
@@ -49,6 +62,23 @@ const ContextMenuWithItems: React.FC<ContextMenuProps> = (props) => {
         />
     </ContextMenu>
   )
+}
+
+const toForeground = (cardId: string) => {
+  const cards = store.getState().cards;
+  const card = cards.find(c => c.id === cardId);
+  if (!card) return cards;
+  const zIndex = card.position.z;
+  let max:number = 0;
+  const newCards = cards.map(c => {
+    max = max < c.position.z ? c.position.z : max;
+    if (c.position.z > zIndex) c.position.z--;
+    return c;
+  });
+  newCards.forEach(c => {
+    if (c.id === cardId) c.position.z = max;
+  })
+  return newCards;
 }
 
 export default ContextMenuWithItems

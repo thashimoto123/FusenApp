@@ -106,7 +106,6 @@ const Board: React.FC<BoardProps> = ({
     }
   }, [setContextMenuView]);
 
-  console.log(contextMenuCardId);
   cardList.forEach(card => {
     card.active = card.id === contextMenuCardId;
     card.focus = card.id === focusCardId;

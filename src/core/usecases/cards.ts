@@ -34,6 +34,7 @@ export interface ICardsUseCase {
   findAll: () => Promise<ICard[]>;
   add: (card: InAddCard) => Promise<undefined>;
   edit: (card: InEditCard) => Promise<undefined>;
+  updateAll: (cards: ICard[]) => Promise<undefined>;
   delete: (id: string) => Promise<undefined>;
 }
 
@@ -73,9 +74,21 @@ export class CardsUseCase implements ICardsUseCase {
   async add(card: InAddCard): Promise<undefined> {
     const cards = await this.repository.findAll();
     if (!cards) { return };
-    const newCards = [...cards, new Card(card)];
+    let maxZIndex:number = 0;
+    cards.forEach(c => {
+      if (maxZIndex < c.position.z) maxZIndex = c.position.z;
+    });
+    const c = new Card(card);
+    c.position.z = maxZIndex + 1;
+    const newCards = [...cards, c];
     this.repository.save(newCards);
     this.presentation.viewCardAll(newCards);
+  }
+
+  async updateAll(cards: ICard[]): Promise<undefined>{
+    this.repository.save(cards);
+    this.presentation.viewCardAll(cards);
+    return;
   }
 
   async edit(card: InEditCard): Promise<undefined> {
