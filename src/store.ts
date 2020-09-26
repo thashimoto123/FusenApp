@@ -8,7 +8,7 @@ import { State as BoardState } from 'reducers/boards';
 import { State as LabelNamesState } from 'reducers/labelNames';
 import { State as UsersState } from 'reducers/users';
 import thunk from 'redux-thunk';
-import logger from 'redux-logger';
+// import logger from 'redux-logger';
 
 export const history = createBrowserHistory();
 
@@ -28,6 +28,6 @@ export default createStore(combineReducers(
   applyMiddleware(
     routerMiddleware(history),
     thunk,
-    logger
+    // logger
   )
 )

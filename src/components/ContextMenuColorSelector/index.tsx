@@ -3,9 +3,6 @@ import { useSelector } from 'react-redux';
 import cn from 'classnames/bind';
 import styles from './style.module.scss';
 import { ICard, IColor, ICardsUseCase } from 'core';
-import { useCardsPresentation } from 'presentations/cards';
-import { useCardsLocalStorageRepository } from 'repositories/cards';
-import { CardsUseCase } from 'core/usecases/cards';
 
 const cx = cn.bind(styles);
 

@@ -1,4 +1,4 @@
-import React, { useRef, useCallback, useEffect } from 'react';
+import React, { useRef, useCallback } from 'react';
 import { useSelector } from 'react-redux';
 import cn from 'classnames/bind';
 import { ICard, ICardsUseCase } from 'core';

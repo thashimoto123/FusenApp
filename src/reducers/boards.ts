@@ -1,6 +1,6 @@
 import { Reducer } from 'redux';
 import * as actions from 'actions/boards';
-import { LayoutType, LAYOUT_FREE, LAYOUT_SORT } from 'constants/index';
+import { LayoutType, LAYOUT_FREE } from 'constants/index';
 
 type Action = ReturnType<typeof actions.updateBoards> | ReturnType<typeof actions.updateCurrentBoard> | ReturnType<typeof actions.updateLayout> | ReturnType<typeof actions.updateSort>
 
