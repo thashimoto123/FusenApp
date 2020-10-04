@@ -1,4 +1,4 @@
-import { IBoardRepository, IBoard, Board, Card } from 'core';
+import { IBoardRepository, IBoard, Board, Card, initialLabelNames } from 'core';
 
 export const useBoardsLocalStorageRepository = (): IBoardRepository => {
   const find: IBoardRepository['find'] = async (id: string) => {
@@ -34,24 +34,34 @@ export const useBoardsLocalStorageRepository = (): IBoardRepository => {
 
 }
 
+const initialLabels = initialLabelNames.map((ln) => {
+  return {
+    id: ln.id,
+    value: ''
+  }
+})
+
 const initialBoard = new Board({
   cards: [
     new Card({
       text: 'ダブルクリックでテキスト編集',
       position: { x: 0, y: 0, z: 1},
-      color: 'rgb(215, 231, 248)'
+      color: 'rgb(215, 231, 248)',
+      labels: initialLabels
     }),
     new Card({
       text: 'ドラッグでカードを移動',
       position: { x: 330, y: 0, z: 2},
-      color: 'rgb(246, 198, 228)'
+      color: 'rgb(246, 198, 228)',
+      labels: initialLabels
     }),
     new Card({
       text: '右クリックでメニューを表示',
       position: {
         x: 660, y: 0, z:0
       },
-      color: 'rgb(246, 236, 191)'
+      color: 'rgb(246, 236, 191)',
+      labels: initialLabels
     }),
   ]
 });
