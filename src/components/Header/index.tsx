@@ -1,27 +1,41 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import cn from 'classnames/bind';
-import styles from './style.module.scss';
+import { ILabelName } from 'core';
 import { LAYOUT_FREE, LAYOUT_SORT, LayoutType } from 'constants/index';
 import * as actions from 'actions/boards';
+import cn from 'classnames/bind';
+import styles from './style.module.scss';
 
 const cx = cn.bind(styles);
 
 const Header: React.FC = () => {
-  const labelNames = useSelector(state => state.labelNames);
-  const selectedLayout = useSelector(state => state.boards.layout);
-  const selectedSort = useSelector(state => state.boards.sort);
-  const dispatch = useDispatch();
+  const headerHumbleProps = useHeader();
+  return <HeaderHumble {...headerHumbleProps} />
+}
 
+type HeaderHumbleProps = {
+  labelNames: ILabelName[];
+  selectedLayout: LayoutType;
+  selectedSort: string;
+  updateLayout: any;
+  updateSort: any;
+}
+
+const HeaderHumble: React.FC<HeaderHumbleProps> = ({
+  labelNames,
+  selectedLayout,
+  selectedSort,
+  updateLayout,
+  updateSort
+}) => {
   const handleClickRadio = (layout: LayoutType) => {
     updateLayout(layout)
   };
-  const updateLayout = (layout: LayoutType) => { dispatch(actions.updateLayout({layout})) }
 
   const handleChangeSelect = (ev: React.ChangeEvent<HTMLSelectElement>) => {
     const index = ev.target.selectedIndex;
     const value = ev.target.options[index]?.value;
-    dispatch(actions.updateSort({sort: value}));
+    updateSort(value);
   }
   return (
     <header className={cx('header')}>
@@ -58,4 +72,27 @@ const Header: React.FC = () => {
   )
 }
 
-export default Header
+const useHeader = (): {
+  labelNames: ILabelName[];
+  selectedLayout: LayoutType;
+  selectedSort: string;
+  updateLayout: any;
+  updateSort: any;
+} => {
+  const labelNames = useSelector(state => state.labelNames);
+  const selectedLayout = useSelector(state => state.boards.layout);
+  const selectedSort = useSelector(state => state.boards.sort);
+  const dispatch = useDispatch();
+  const updateLayout = (layout: LayoutType) => { dispatch(actions.updateLayout({layout})); };
+  const updateSort = (value: string) => {  dispatch(actions.updateSort({sort: value})); };
+
+  return {
+    labelNames,
+    selectedLayout,
+    selectedSort,
+    updateLayout,
+    updateSort
+  }
+};
+
+export default Header;
