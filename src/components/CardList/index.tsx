@@ -10,7 +10,9 @@ interface LabelForView extends ILabel {
   name: string
 }
 
-export type CardType = {
+export type CardListWithLabelName = CardWithLabelName[];
+
+export type CardWithLabelName = {
   id: ICard['id'];
   text: ICard['text'];
   position: ICard['position'];
@@ -20,18 +22,18 @@ export type CardType = {
   active?: boolean;
 }
 
-export type HandleClickCardFactory = (card: CardType) => (ev: React.MouseEvent<HTMLDivElement>) => void;
-export type HandleDoubleClickCardFactory = (card: CardType) => (ev: React.MouseEvent<HTMLDivElement>) => void;
-export type HandleRightClickCardFactory = (card: CardType) => (ev: React.MouseEvent<HTMLDivElement>) => void;
-export type HandleChangeTextFactory = (card: CardType) => (ev: React.ChangeEvent<HTMLTextAreaElement>) => void;
-export type HandleDragCardFactory = (card: CardType) => (ev: React.MouseEvent<HTMLDivElement>) => void;
-export type HandleMouseDownFactory = (card: CardType) => (ev: React.MouseEvent<HTMLDivElement>) => void;
-export type HandleBlurFactory = (card: CardType) => (ev: React.FormEvent<HTMLInputElement>) => void;
+export type HandleClickCardFactory = (card: CardWithLabelName) => (ev: React.MouseEvent<HTMLDivElement>) => void;
+export type HandleDoubleClickCardFactory = (card: CardWithLabelName) => (ev: React.MouseEvent<HTMLDivElement>) => void;
+export type HandleRightClickCardFactory = (card: CardWithLabelName) => (ev: React.MouseEvent<HTMLDivElement>) => void;
+export type HandleChangeTextFactory = (card: CardWithLabelName) => (ev: React.ChangeEvent<HTMLTextAreaElement>) => void;
+export type HandleDragCardFactory = (card: CardWithLabelName) => (ev: React.MouseEvent<HTMLDivElement>) => void;
+export type HandleMouseDownFactory = (card: CardWithLabelName) => (ev: React.MouseEvent<HTMLDivElement>) => void;
+export type HandleBlurFactory = (card: CardWithLabelName) => (ev: React.FormEvent<HTMLInputElement>) => void;
 
 export type CardListProps = {
   style?: React.CSSProperties;
   ItemComponent?: React.FC<CardProps>;
-  cardList: CardType[];
+  cardList: CardListWithLabelName;
   handleRightClickCardFactory?: HandleRightClickCardFactory;
   handleClickCardFactory?: HandleClickCardFactory;
   handleDoubleClickCardFactory?: HandleDoubleClickCardFactory;
@@ -60,7 +62,7 @@ const CardList: React.FC<CardListProps> = ({
   return (
     <div className={cx('cardList')} style={style}>
       {
-        cardList.map((card: CardType) => {
+        cardList.map((card: CardWithLabelName) => {
           const handleClick = handleClickCardFactory(card);
           const handleRightClick = handleRightClickCardFactory(card);
           const handleDoubleClick = handleDoubleClickCardFactory(card);

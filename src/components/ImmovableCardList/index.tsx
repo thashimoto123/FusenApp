@@ -1,8 +1,8 @@
 import React from 'react';
-import CardList, { CardListProps, CardType } from 'components/CardList';
+import CardList, { CardListProps, CardWithLabelName } from 'components/CardList';
 
 const ImmovableCardList: React.FC<CardListProps> = (props) => {
-  const cardList = props.cardList.map((card: CardType) => {
+  const cardList = props.cardList.map((card: CardWithLabelName) => {
     return {
       ...card,
       position: {

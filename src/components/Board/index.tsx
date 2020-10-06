@@ -11,7 +11,7 @@ import  CardList, {
   HandleChangeTextFactory,
   HandleMouseDownFactory,
   HandleBlurFactory,
-  CardType
+  CardListWithLabelName
 } from 'components/CardList';
 import AddCardInputWithButton from 'components/AddCardInputWithButton';
 import { useContextMenu } from './hooks';
@@ -23,7 +23,7 @@ export type BoardProps = {
   boardRef?: any;
   CardListComponent?: React.FC<CardListProps>;
   cardsUseCase: ICardsUseCase;
-  cardList?: CardType[]
+  cardList?: CardListWithLabelName
   loading?: boolean;
 }
 
@@ -106,10 +106,7 @@ const Board: React.FC<BoardProps> = ({
     }
   }, [setContextMenuView]);
 
-  cardList.forEach(card => {
-    card.active = card.id === contextMenuCardId;
-    card.focus = card.id === focusCardId;
-  });
+  const cardListWithAddedStatus = addCardStatus(cardList, contextMenuCardId, focusCardId);
 
   const contextMenuProps = {
     card,
@@ -126,15 +123,18 @@ const Board: React.FC<BoardProps> = ({
       <div ref={overlayRef} className={cx('overlay')}></div>
       { !loading && (
         <>
-          <AddCardInputWithButton style={{
-            position: 'relative',
-            marginBottom: '30px',
-            zIndex: 3,
-          }} />
+          <AddCardInputWithButton 
+            style={{
+              position: 'relative',
+              marginBottom: '30px',
+              zIndex: 3,
+            }}
+            cardsUseCase={cardsUseCase} 
+          />
 
           <CardListComponent 
             style={{zIndex: 2}}
-            cardList={cardList}
+            cardList={cardListWithAddedStatus}
             handleClickCardFactory={handleClickCardFactory}
             handleRightClickCardFactory={handleRightClickCardFactory}
             handleDoubleClickCardFactory={handleDoubleClickCardFactory}
@@ -151,7 +151,14 @@ const Board: React.FC<BoardProps> = ({
       }
     </div>
   )
+}
 
+const addCardStatus = (cardList: CardListWithLabelName, contextMenuCardId: string | null, focusCardId: string | null): CardListWithLabelName => {
+  return cardList.map(card => {
+    card.active = card.id === contextMenuCardId;
+    card.active = card.id === focusCardId;
+    return card;
+  })
 }
 
 export default Board

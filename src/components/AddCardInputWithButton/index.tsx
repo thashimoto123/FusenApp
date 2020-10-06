@@ -1,21 +1,17 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { CardsUseCase } from 'core';
-import { useCardsLocalStorageRepository } from 'repositories/cards';
-import { useCardsPresentation } from 'presentations/cards';
+import { ICardsUseCase } from 'core';
 import InputWithButton, { InputWithButtonProps } from 'components/InputWithButton';
 
 export type AddCardInputWithButtonProps = {
   style?: React.CSSProperties;
+  cardsUseCase: ICardsUseCase;
 }
 
-const AddCardInputWithButton: React.FC<AddCardInputWithButtonProps> = (props) => {
+const AddCardInputWithButton: React.FC<AddCardInputWithButtonProps> = ({style = {}, cardsUseCase}) => {
   const labelNames = useSelector(state => state.labelNames);
   const [text, setText] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const repository = useCardsLocalStorageRepository();
-  const presentation = useCardsPresentation({ setLoading });
-  const cardsUseCase = new CardsUseCase(repository, presentation);
 
   const initialLabels = labelNames.map(labelName => ({
     id: labelName.id,
@@ -39,14 +35,14 @@ const AddCardInputWithButton: React.FC<AddCardInputWithButtonProps> = (props) =>
 
   const inputWithButtonProps: InputWithButtonProps = useMemo(() => {
     return {
-      style: props.style,
+      style,
       handleSubmit,
       handleChange,
       buttonValue: 'カードを追加',
       disabled: loading,
       value: text,
     }
-  }, [props, handleSubmit, handleChange, text, loading]);
+  }, [style, handleSubmit, handleChange, text, loading]);
 
   return <InputWithButton {...inputWithButtonProps}  />
 }

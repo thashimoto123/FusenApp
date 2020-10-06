@@ -4,7 +4,7 @@ import { CardsUseCase, ICardsUseCase } from 'core';
 import { useCardsLocalStorageRepository } from 'repositories/cards';
 import { useCardsPresentation } from 'presentations/cards';
 import Board from 'components/Board';
-import { CardType } from 'components/CardList';
+import { CardListWithLabelName } from 'components/CardList';
 import ImmovableCardList from 'components/ImmovableCardList';
 
 const LayoutSortBoard: React.FC = () => {
@@ -51,7 +51,7 @@ const LayoutSortBoard: React.FC = () => {
   )
 }
 
-export type SortFunc = (cards: CardType[]) => CardType[];
+export type SortFunc = (cards: CardListWithLabelName) => CardListWithLabelName;
 
 const textSort: SortFunc = (cards) => {
   const output = [...cards];
