@@ -42,12 +42,12 @@ const Header: React.FC = () => {
         selectedLayout === LAYOUT_SORT && (
           <div className={cx('sort')}>
             並べ替え：
-            <select name="" onChange={handleChangeSelect}>
-              <option value="text" selected={selectedSort === 'text'}>テキスト</option>
-              <option value="color" selected={selectedSort === 'color'}>カラー</option>
+            <select name="" onChange={handleChangeSelect} defaultValue={selectedSort}>
+              <option value="text">テキスト</option>
+              <option value="color">カラー</option>
               {
                 labelNames.map((label) => {
-                  return <option key={label.id} value={"label:"+label.id} selected={selectedSort === "label:"+label.id} >ラベル：{label.name}</option>
+                  return <option key={label.id} value={"label:"+label.id} >ラベル：{label.name}</option>
                 })
               }
             </select>
