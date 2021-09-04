@@ -13,6 +13,11 @@ export default {
         type: 'color'
       }
     }
+  },
+  parameters: {
+    backgrounds: {
+      default: 'light',
+    }
   }
 } as Meta;
 
@@ -28,7 +33,7 @@ Default.args = {
 export const Color = Template.bind({});
 Color.args = {
   ...Default.args,
-  text: 'set color code #94D4a9',
+  text: 'Set color code #94D4a9',
   color: '#94D4a9',
 }
 
