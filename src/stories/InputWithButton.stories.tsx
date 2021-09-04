@@ -18,8 +18,8 @@ const Template: Story<InputWithButtonProps> = (args) => <InputWithButton {...arg
 
 export const Basic = Template.bind({});
 Basic.args = {
-  handleSubmit: (e, ...args) => { e.preventDefault(); action('onSubmit')(e, ...args) },
-  handleChange: action('onChange')
+  onSubmit: (e, ...args) => { e.preventDefault(); action('onSubmit')(e, ...args) },
+  onChange: action('onChange')
 }
 
 export const WithValue = Template.bind({});

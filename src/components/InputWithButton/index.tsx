@@ -6,8 +6,8 @@ const cx = cn.bind(styles);
 
 export type InputWithButtonProps = {
   style?: React.CSSProperties;
-  handleSubmit?: (ev: React.FormEvent<HTMLFormElement>) => void;
-  handleChange?: (ev: React.ChangeEvent<HTMLInputElement>) => void;
+  onSubmit?: (ev: React.FormEvent<HTMLFormElement>) => void;
+  onChange?: (ev: React.ChangeEvent<HTMLInputElement>) => void;
   disabled?: boolean;
   value?: string;
   buttonValue?: string;
@@ -16,14 +16,14 @@ export type InputWithButtonProps = {
 
 const InputWithButton: React.FC<InputWithButtonProps> = ({
   style = {},
-  handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {},
-  handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {},
+  onSubmit = (ev: React.FormEvent<HTMLFormElement>) => {},
+  onChange = (ev: React.ChangeEvent<HTMLInputElement>) => {},
   disabled = false,
   value = '',
   buttonValue = '送信',
   placeholder = ''
 }) => {
-  
+
   const [isFocus, setIsFocus] = useState<boolean>(false);
   const handleFocus = useCallback(() => {
     setIsFocus(true);
@@ -33,15 +33,15 @@ const InputWithButton: React.FC<InputWithButtonProps> = ({
   }, [setIsFocus]);
 
   return (
-    <form style={style} className={cx('input-wrap', {'focus': isFocus})} onSubmit={handleSubmit}>
-      <input 
-        type="text" 
+    <form style={style} className={cx('input-wrap', {'focus': isFocus})} onSubmit={onSubmit}>
+      <input
+        type="text"
         value={value}
         onBlur={handleBlur}
         onFocus={handleFocus}
         disabled={disabled}
         placeholder={placeholder}
-        onChange={handleChange} 
+        onChange={onChange}
       />
       <button type='submit' disabled={disabled}>{buttonValue}</button>
     </form>

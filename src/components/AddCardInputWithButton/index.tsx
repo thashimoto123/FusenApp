@@ -11,7 +11,6 @@ export type AddCardInputWithButtonProps = {
 const AddCardInputWithButton: React.FC<AddCardInputWithButtonProps> = ({style = {}, cardsUseCase}) => {
   const labelNames = useSelector(state => state.labelNames);
   const [text, setText] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
 
   const initialLabels = labelNames.map(labelName => ({
     id: labelName.id,
@@ -29,20 +28,19 @@ const AddCardInputWithButton: React.FC<AddCardInputWithButtonProps> = ({style = 
     setText('');
   }, [cardsUseCase, text, initialLabels]);
 
-  const handleChange = useCallback((ev: React.ChangeEvent<HTMLInputElement>) => { 
+  const handleChange = useCallback((ev: React.ChangeEvent<HTMLInputElement>) => {
     setText(ev.target.value);
   }, [setText]);
 
   const inputWithButtonProps: InputWithButtonProps = useMemo(() => {
     return {
       style,
-      handleSubmit,
-      handleChange,
+      onSubmit: handleSubmit,
+      onChange: handleChange,
       buttonValue: 'カードを追加',
-      disabled: loading,
       value: text,
     }
-  }, [style, handleSubmit, handleChange, text, loading]);
+  }, [style, handleSubmit, handleChange, text]);
 
   return <InputWithButton {...inputWithButtonProps}  />
 }
