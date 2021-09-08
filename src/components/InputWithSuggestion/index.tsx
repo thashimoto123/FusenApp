@@ -5,7 +5,7 @@ import styles from './style.module.scss';
 
 const cx = cn.bind(styles);
 
-const InputWithSuggestion:React.FC = () => {
+const InputWithSuggestion:React.FC<{ style: React.CSSProperties }> = ({ style }) => {
   const words = ['オレンジ','オレオ','おれんち','オンザムーン','orange','oreo', 'on the moon'];
   const [text, setText] = useState<string>('');
   const [isFoucs, setIsFocus]= useState<boolean>(false);
@@ -17,13 +17,13 @@ const InputWithSuggestion:React.FC = () => {
   }, [setText, setIsFocus, inputRef]);
 
   return (
-    <div className={cx('input-wrap')}>
-      <input 
+    <div className={cx('input-wrap')} style={style}>
+      <input
         ref={inputRef}
         type="text"
-        value={text} 
-        onChange={(ev) => setText(ev.target.value)} 
-        onFocus={() => {setIsFocus(true)}} 
+        value={text}
+        onChange={(ev) => setText(ev.target.value)}
+        onFocus={() => {setIsFocus(true)}}
         onBlur={() => {setIsFocus(false)}}
         onCompositionUpdate={(ev) => {ev.preventDefault()}}
       />

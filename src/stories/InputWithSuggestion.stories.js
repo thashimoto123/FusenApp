@@ -10,5 +10,5 @@ export default {
 
 
 export const Basic = () => {
-  return <InputWithSuggestion />
+  return <InputWithSuggestion style={{ position: 'relative', top: 0, left: 0, transform: 'none' }} />
 }
